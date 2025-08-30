@@ -17,6 +17,7 @@ public class User {
   @Column(name = "room_code")
   private Long roomCode;
   private String password;
+  private String imgurl;
 
   public Long getId(){
     return id;
@@ -51,5 +52,12 @@ public class User {
   }
   public void setPassword(String password){
     this.password = password;
+  }
+
+  public String getImgurl(){
+    return imgurl;
+  }
+  public void setImgurl(String imgurl){
+    this.imgurl = imgurl;
   }
 }

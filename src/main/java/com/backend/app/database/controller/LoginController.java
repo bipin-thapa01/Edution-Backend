@@ -1,15 +1,24 @@
 package com.backend.app.database.controller;
 
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.backend.app.database.service.UserService;
+import com.backend.app.dto.AuthenticateDTO;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins= "http://localhost:3000")
 public class LoginController {
-  @PostMapping("path")
-  public String postMethodName(@RequestBody String entity) {
+  UserService userService;
+  public LoginController(UserService userService){
+    this.userService = userService;
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<Map<String,String>> postMethodName(@RequestBody AuthenticateDTO dt){
       //TODO: process POST request
-      
-      return entity;
+      return userService.loginUser(dt);
   }
   
 }

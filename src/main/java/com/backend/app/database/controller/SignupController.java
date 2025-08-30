@@ -2,8 +2,8 @@ package com.backend.app.database.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.backend.app.database.service.UserService;
-import com.backend.app.dto.SignupResponseDTO;
-import com.backend.app.dto.UserDTO;
+import com.backend.app.dto.ResponseDTO;
+import com.backend.app.dto.AuthenticateDTO;
 
 @RestController
 @RequestMapping("/api")
@@ -15,7 +15,7 @@ public class SignupController {
   }
 
   @PostMapping("/signup")
-  public SignupResponseDTO postMethodName(@RequestBody UserDTO dt) {
+  public ResponseDTO postMethodName(@RequestBody AuthenticateDTO dt) {
       //TODO: process POST request
       return userService.signupUser(dt);
   }

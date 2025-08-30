@@ -1,11 +1,13 @@
 package com.backend.app.dto;
+
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserDTO {
+public class AuthenticateDTO {
   private String name;
   private String email;
-  private String imgurl;
+  private String password;
+  private Long code;
 
   public String getName(){
     return name;
@@ -23,11 +25,19 @@ public class UserDTO {
     this.email = email;
   }
 
-  public String getImgurl(){
-    return imgurl;
+  public String getPassword(){
+    return password;
   }
 
-  public void setImgurl(String imgurl){
-    this.imgurl = imgurl;
+  public void setPassword(String password){
+    this.password = password;
+  }
+
+  public Long getCode(){
+    return code;
+  }
+
+  public void setCode(Long code){
+    this.code = code;
   }
 }
