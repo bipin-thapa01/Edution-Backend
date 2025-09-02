@@ -22,6 +22,7 @@ public class FeedService {
     else{
       User user = userRepository.findByEmail(email);
       userDTO.setName(user.getName());
+      userDTO.setUsername(user.getUsername());
       userDTO.setEmail(user.getEmail());
       userDTO.setImgurl(user.getImgurl());
       responseDTO.setResponse("valid");

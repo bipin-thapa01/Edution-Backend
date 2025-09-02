@@ -7,5 +7,5 @@ import com.backend.app.database.entity.Friend;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend,Long> {
-  public List<Friend> findByUserdId(Long user);
+  public List<Friend> findByUserId(Long user);
 }

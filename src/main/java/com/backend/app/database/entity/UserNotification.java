@@ -1,6 +1,7 @@
 package com.backend.app.database.entity;
 
-import java.time.OffsetDateTime;
+import java.lang.Long;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,16 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "friend_request")
-public class Friend {
+@Table(name = "user_notification")
+public class UserNotification {
   @Id
-  @GeneratedValue(strategy =GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(name = "user_id")
   private Long userId;
-  @Column(name = "friend_id")
-  private Long friendId;
-  private OffsetDateTime date;
+  private String description;
+  private String source;
 
   public Long getId(){
     return id;
@@ -34,17 +34,17 @@ public class Friend {
     this.userId = userId;
   }
 
-  public Long getFriendId(){
-    return friendId;
+  public String getDescription(){
+    return description;
   }
-  public void setFriendId(Long friendId){
-    this.friendId = friendId;
+  public void setDescription(String description){
+    this.description = description;;
   }
 
-  public OffsetDateTime getDate(){
-    return date;
+  public String getSource(){
+    return source;
   }
-  public void setDate(OffsetDateTime date){
-    this.date = date;
+  public void setSource(String source){
+    this.source = source;
   }
 }

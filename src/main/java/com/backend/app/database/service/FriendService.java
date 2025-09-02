@@ -1,5 +1,6 @@
 package com.backend.app.database.service;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,21 @@ public class FriendService {
 
   public List<User> getFriendRequests(String email){
     User user = userRepository.findByEmail(email);
-    List<Friend> friends = friendRepository.findByUserdId(user.getId());
+    List<Friend> friends = friendRepository.findByUserId(user.getId());
     List<Long> l = new ArrayList<>();
     for(Friend f: friends){
       l.add(f.getFriendId());
     }
     return userRepository.findAllById(l);
+  }
+
+  public List<OffsetDateTime> getDate(String email){
+    User user = userRepository.findByEmail(email);
+    List<Friend> friends = friendRepository.findByUserId(user.getId());
+    List<OffsetDateTime> date = new ArrayList<>();
+    for(Friend friend: friends){
+      date.add(friend.getDate());
+    }
+    return date;
   }
 }

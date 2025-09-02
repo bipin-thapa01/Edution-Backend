@@ -2,6 +2,8 @@ package com.backend.app.dto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
+//dto used for login/signup and accessing homepage
 @Component
 public class ResponseDTO {
   private String res;

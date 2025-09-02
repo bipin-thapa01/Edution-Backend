@@ -38,12 +38,17 @@ public class UserService {
     List<User> users = userRepository.findAll();
     for (User user : users) {
       if (user.getEmail().equals(dt.getEmail())) {
-        responseDTO.setResponse("Same Email Error!");
+        responseDTO.setResponse("This email is already in use!");
+        return responseDTO;
+      }
+      if(user.getUsername().equals(dt.getUsername())){
+        responseDTO.setResponse("This Username is already in use!");
         return responseDTO;
       }
     }
     User userToBeInserted = new User();
     userToBeInserted.setName(dt.getName());
+    userToBeInserted.setUsername(dt.getUsername());
     userToBeInserted.setEmail(dt.getEmail());
     userToBeInserted.setPassword(dt.getPassword());
     userToBeInserted.setRoomCode(dt.getCode());
@@ -56,11 +61,23 @@ public class UserService {
   }
 
   public ResponseEntity<Map<String,String>> loginUser(AuthenticateDTO dt){
-    User u = userRepository.findByEmailAndPassword(dt.getEmail(), dt.getPassword());
-    if(u == null){
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","Invalid email or password!"));
+    User u;
+    String tokenEmail = "";
+    System.out.println(dt.getEmail());
+    if(dt.getEmail() != "" && dt.getEmail() != null){
+      u = userRepository.findByEmailAndPassword(dt.getEmail(), dt.getPassword());
+      tokenEmail = dt.getEmail();
     }
-    String token = jwtUtil.generateToken(u.getId().toString(), dt.getEmail());
+    else{
+      u = userRepository.findByUsernameAndPassword(dt.getUsername(), dt.getPassword());
+      if(u!=null){
+        tokenEmail = u.getEmail();
+      }
+    }
+    if(u == null){
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","Invalid email/username or password!"));
+    }
+    String token = jwtUtil.generateToken(u.getId().toString(), tokenEmail);
     return ResponseEntity.ok(Map.of("token",token));
   }
 }

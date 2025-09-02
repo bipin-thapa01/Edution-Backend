@@ -2,9 +2,11 @@ package com.backend.app.dto;
 
 import org.springframework.stereotype.Component;
 
+//dto for login and signup
 @Component
 public class AuthenticateDTO {
   private String name;
+  private String username;
   private String email;
   private String password;
   private Long code;
@@ -15,6 +17,14 @@ public class AuthenticateDTO {
 
   public void setName(String name){
     this.name = name;
+  }
+
+  public String getUsername(){
+    return username;
+  }
+  
+  public void setUsername(String username){
+    this.username = username;
   }
 
   public String getEmail(){

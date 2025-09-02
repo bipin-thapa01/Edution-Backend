@@ -18,6 +18,7 @@ public class User {
   private Long roomCode;
   private String password;
   private String imgurl;
+  private String username;
 
   public Long getId(){
     return id;
@@ -59,5 +60,12 @@ public class User {
   }
   public void setImgurl(String imgurl){
     this.imgurl = imgurl;
+  }
+
+  public String getUsername(){
+    return username;
+  }
+  public void setUsername(String username){
+    this.username = username;
   }
 }
