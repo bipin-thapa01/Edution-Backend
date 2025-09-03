@@ -1,6 +1,7 @@
 package com.backend.app.database.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.backend.app.database.entity.*;
@@ -12,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
   public User findByEmailAndPassword(String email, String password);
 
   public User findByUsernameAndPassword(String username, String password);
+
+  @Query("SELECT u.imgurl FROM User u WHERE u.username = :username")
+  public String findImgurlByUsername(String username);
 }

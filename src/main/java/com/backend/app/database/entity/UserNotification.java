@@ -1,6 +1,7 @@
 package com.backend.app.database.entity;
 
 import java.lang.Long;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +20,7 @@ public class UserNotification {
   private Long userId;
   private String description;
   private String source;
+  private OffsetDateTime date;
 
   public Long getId(){
     return id;
@@ -46,5 +48,12 @@ public class UserNotification {
   }
   public void setSource(String source){
     this.source = source;
+  }
+
+  public OffsetDateTime getDate(){
+    return date;
+  }
+  public void setDate(OffsetDateTime date){
+    this.date = date;
   }
 }
