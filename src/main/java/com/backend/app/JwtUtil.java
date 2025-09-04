@@ -21,7 +21,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
 
-        long expirationTime = 1000 * 60 * 60;
+        long expirationTime = 1000 * 60 * 60 * 24;
 
         return Jwts.builder()
                 .setClaims(claims)

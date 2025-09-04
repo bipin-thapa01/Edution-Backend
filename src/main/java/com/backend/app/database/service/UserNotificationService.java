@@ -3,10 +3,8 @@ package com.backend.app.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backend.app.database.entity.User;
-import com.backend.app.database.entity.UserNotification;
 import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.UserNotificationDTO;
