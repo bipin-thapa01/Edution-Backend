@@ -7,6 +7,7 @@ public class UserNotificationDTO {
   private String source;
   private OffsetDateTime date;
   private String imgurl;
+  private String type;
 
   public String getDescription(){
     return description;
@@ -32,8 +33,14 @@ public class UserNotificationDTO {
   public String getImgurl(){
     return imgurl;
   }
-
   public void setImgurl(String imgurl){
     this.imgurl = imgurl;
+  }
+
+  public String getType(){
+    return type;
+  }
+  public void setType(String type){
+    this.type = type;
   }
 }

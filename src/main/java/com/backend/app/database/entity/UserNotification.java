@@ -21,39 +21,54 @@ public class UserNotification {
   private String description;
   private String source;
   private OffsetDateTime date;
+  private String type;
 
-  public Long getId(){
+  public Long getId() {
     return id;
   }
-  public void setId(Long id){
+
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public Long getUserId(){
+  public Long getUserId() {
     return userId;
   }
-  public void setUserId(Long userId){
+
+  public void setUserId(Long userId) {
     this.userId = userId;
   }
 
-  public String getDescription(){
+  public String getDescription() {
     return description;
   }
-  public void setDescription(String description){
-    this.description = description;;
+
+  public void setDescription(String description) {
+    this.description = description;
+    ;
   }
 
-  public String getSource(){
+  public String getSource() {
     return source;
   }
-  public void setSource(String source){
+
+  public void setSource(String source) {
     this.source = source;
   }
 
-  public OffsetDateTime getDate(){
+  public OffsetDateTime getDate() {
     return date;
   }
-  public void setDate(OffsetDateTime date){
+
+  public void setDate(OffsetDateTime date) {
     this.date = date;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }
