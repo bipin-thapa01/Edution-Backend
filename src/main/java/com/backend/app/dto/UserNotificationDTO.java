@@ -8,6 +8,7 @@ public class UserNotificationDTO {
   private OffsetDateTime date;
   private String imgurl;
   private String type;
+  private String status;
 
   public String getDescription(){
     return description;
@@ -42,5 +43,12 @@ public class UserNotificationDTO {
   }
   public void setType(String type){
     this.type = type;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+  public void setStatus(String status) {
+    this.status = status;
   }
 }

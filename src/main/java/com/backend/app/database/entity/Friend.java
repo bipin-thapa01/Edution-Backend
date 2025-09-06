@@ -9,42 +9,55 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "friend_request")
+@Table(name = "friend")
 public class Friend {
   @Id
-  @GeneratedValue(strategy =GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(name = "user_id")
   private Long userId;
   @Column(name = "friend_id")
   private Long friendId;
   private OffsetDateTime date;
+  private String status;
 
-  public Long getId(){
+  public Long getId() {
     return id;
   }
-  public void setId(Long id){
+
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public Long getUserId(){
+  public Long getUserId() {
     return userId;
   }
-  public void setUserId(Long userId){
+
+  public void setUserId(Long userId) {
     this.userId = userId;
   }
 
-  public Long getFriendId(){
+  public Long getFriendId() {
     return friendId;
   }
-  public void setFriendId(Long friendId){
+
+  public void setFriendId(Long friendId) {
     this.friendId = friendId;
   }
 
-  public OffsetDateTime getDate(){
+  public OffsetDateTime getDate() {
     return date;
   }
-  public void setDate(OffsetDateTime date){
+
+  public void setDate(OffsetDateTime date) {
     this.date = date;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 }

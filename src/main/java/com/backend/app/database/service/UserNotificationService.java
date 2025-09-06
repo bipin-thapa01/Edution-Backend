@@ -39,6 +39,7 @@ public class UserNotificationService {
       dto.setSource(n.getSource());
       dto.setDate(n.getDate());
       dto.setType(n.getType());
+      dto.setStatus(n.getStatus());
       if(n.getSource().equals("admin")){
         dto.setImgurl("https://i.postimg.cc/J7PTgqcW/24bdeecd546a2c6b7e34857a104afe68.jpg");
       }
@@ -53,11 +54,17 @@ public class UserNotificationService {
       UserNotificationDTO dto = new UserNotificationDTO();
       String friendEmail = userRepository.findEmailById(n.getId());
       User u = userRepository.findByEmail(friendEmail);
-      dto.setDescription("You have received follow request from " + u.getName());
+      if(n.getStatus().equals("pending")){
+        dto.setDescription("You have received follow request from " + u.getName());
+      }
+      else{
+        dto.setDescription("You have accepted follow request from " + u.getName());
+      }
       dto.setDate(n.getDate());
       dto.setImgurl(u.getImgurl());
       dto.setSource(u.getUsername());
       dto.setType("friend request");
+      dto.setStatus(n.getStatus());
       return dto;
     }).toList();
     
