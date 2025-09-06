@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.service.FriendService;
+import com.backend.app.dto.FriendRequestChangeDTO;
 import com.backend.app.dto.FriendRequestDTO;
+import com.backend.app.dto.ResponseDTO;
 import com.backend.app.dto.UserDTO;
 
 import java.time.OffsetDateTime;
@@ -14,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -55,5 +60,9 @@ public class FriendRequestController {
       return list;
     }
   }
-  
+
+  @PostMapping("/friend-request")
+  public ResponseDTO postMethodName(@RequestBody FriendRequestChangeDTO dt) {
+      return friendService.updateFriendTable(dt.getUsername(), dt.getSource(), dt.getResponse());
+  }
 }

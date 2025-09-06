@@ -1,6 +1,7 @@
 package com.backend.app.database.service;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.UserRepository;
+import com.backend.app.dto.ResponseDTO;
 
 @Service
 public class FriendService {
@@ -38,5 +40,20 @@ public class FriendService {
       date.add(friend.getDate());
     }
     return date;
+  }
+
+  public ResponseDTO updateFriendTable(String username, String friendUsername, String response){
+    Long userId = userRepository.findIdByUsername(username);
+    Long friendId = userRepository.findIdByUsername(friendUsername);
+    OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+    int status = friendRepository.updateStatusAndDate(userId, friendId, response, now);
+    ResponseDTO responseDTO =  new ResponseDTO();
+    if(status == 1){
+      responseDTO.setResponse("success");
+    }
+    else{
+      responseDTO.setResponse("error");
+    }
+    return responseDTO;
   }
 }

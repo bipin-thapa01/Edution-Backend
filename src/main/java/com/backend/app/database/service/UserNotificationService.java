@@ -57,8 +57,11 @@ public class UserNotificationService {
       if(n.getStatus().equals("pending")){
         dto.setDescription("You have received follow request from " + u.getName());
       }
-      else{
+      else if(n.getStatus().equals("accepted")){
         dto.setDescription("You have accepted follow request from " + u.getName());
+      }
+      else{
+        dto.setDescription("You have declined follow request from " + u.getName());
       }
       dto.setDate(n.getDate());
       dto.setImgurl(u.getImgurl());
