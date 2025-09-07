@@ -16,7 +16,6 @@ public class SignupController {
 
   @PostMapping("/signup")
   public ResponseDTO postMethodName(@RequestBody AuthenticateDTO dt) {
-      //TODO: process POST request
       return userService.signupUser(dt);
   }
 }

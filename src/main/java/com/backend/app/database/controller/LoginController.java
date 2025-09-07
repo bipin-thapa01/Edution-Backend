@@ -17,7 +17,6 @@ public class LoginController {
 
   @PostMapping("/login")
   public ResponseEntity<Map<String,String>> postMethodName(@RequestBody AuthenticateDTO dt){
-      //TODO: process POST request
       return userService.loginUser(dt);
   }
   
