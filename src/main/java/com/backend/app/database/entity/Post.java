@@ -18,9 +18,7 @@ public class Post {
   private Long by;
   private String description;
   private String imgurl;
-  private Long agree;
-  private Long neutral;
-  private Long disagree;
+  private Long star;
   private Long save;
 
   public Long getId(){
@@ -58,25 +56,11 @@ public class Post {
     this.imgurl = imgurl;
   }
 
-  public Long getAgree(){
-    return agree;
+  public Long getStar(){
+    return star;
   }
-  public void setAgree(Long agree){
-    this.agree = agree;
-  }
-
-  public Long getNeutral(){
-    return neutral;
-  }
-  public void setNeutral(Long neutral){
-    this.neutral = neutral;
-  }
-
-  public Long getDisagree(){
-    return disagree;
-  }
-  public void setDisagree(Long disagree){
-    this.disagree = disagree;
+  public void setStar(Long star){
+    this.star = star;
   }
 
   public Long getSave(){

@@ -25,6 +25,7 @@ public class FeedService {
       userDTO.setUsername(user.getUsername());
       userDTO.setEmail(user.getEmail());
       userDTO.setImgurl(user.getImgurl());
+      userDTO.setType(user.getType());
       responseDTO.setResponse("valid");
       responseDTO.setUser(userDTO);
       return responseDTO;

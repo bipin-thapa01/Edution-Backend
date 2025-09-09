@@ -2,6 +2,8 @@ package com.backend.app.dto;
 import java.time.OffsetDateTime;
 import org.springframework.stereotype.Component;
 
+import com.backend.app.database.Enum.AccountType;
+
 @Component
 public class UserDTO {
   private String name;
@@ -10,6 +12,7 @@ public class UserDTO {
   private Long roomCode;
   private String imgurl;
   private OffsetDateTime date;
+  private AccountType type;
 
   public String getName(){
     return name;
@@ -57,5 +60,12 @@ public class UserDTO {
 
   public void setDate(OffsetDateTime date){
     this.date = date;
+  }
+
+  public AccountType getType(){
+    return type;
+  }
+  public void setType(AccountType type){
+    this.type = type;
   }
 }

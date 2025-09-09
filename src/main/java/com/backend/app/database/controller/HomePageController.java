@@ -26,8 +26,8 @@ public class HomePageController {
   }
 
   @GetMapping("/home")
-  public ResponseDTO getMethodName(@RequestHeader ("Authorization") String header) {
-    String token = header.substring(7);
+  public ResponseDTO getMethodName(@RequestHeader ("authorization") String header) {
+    String token = header;
       if(jwtUtil.validateToken(token)){
         String email = jwtUtil.extractEmail(token);
         return feedService.fetchFeedData(email);

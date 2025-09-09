@@ -42,6 +42,7 @@ public class UserNotificationController {
       userDTO.setEmail(user.getEmail());
       userDTO.setImgurl(user.getImgurl());
       userDTO.setRoomCOde(user.getRoomCode());
+      userDTO.setType(user.getType());
       res.setUserDTO(userDTO);
       return res;
     } else {

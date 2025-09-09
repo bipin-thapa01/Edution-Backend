@@ -3,22 +3,12 @@ package com.backend.app.dto;
 import java.time.OffsetDateTime;
 
 public class PostDTO {
-  private Long id;
   private OffsetDateTime createdAt;
-  private Long by;
+  private String by;
   private String description;
   private String imgurl;
-  private Long agree;
-  private Long neutral;
-  private Long disagree;
+  private Long star;
   private Long save;
-
-  public Long getId(){
-    return id;
-  }
-  public void setId(Long id){
-    this.id = id;
-  }
 
   public OffsetDateTime getCreatedAt(){
     return createdAt;
@@ -27,10 +17,10 @@ public class PostDTO {
     this.createdAt = createdAt;
   }
 
-  public Long getBy(){
+  public String getBy(){
     return by;
   }
-  public void setBy(Long by){
+  public void setBy(String by){
     this.by = by;
   }
 
@@ -48,25 +38,11 @@ public class PostDTO {
     this.imgurl = imgurl;
   }
 
-  public Long getAgree(){
-    return agree;
+  public Long getStar(){
+    return star;
   }
-  public void setAgree(Long agree){
-    this.agree = agree;
-  }
-
-  public Long getNeutral(){
-    return neutral;
-  }
-  public void setNeutral(Long neutral){
-    this.neutral = neutral;
-  }
-
-  public Long getDisagree(){
-    return disagree;
-  }
-  public void setDisagree(Long disagree){
-    this.disagree = disagree;
+  public void setStar(Long star){
+    this.star = star;
   }
 
   public Long getSave(){

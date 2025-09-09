@@ -20,7 +20,8 @@ public class UserNotificationService {
   UserRepository userRepository;
   FriendRepository friendRepository;
 
-  public UserNotificationService(UserNotificationRepository userNotificationRepository, UserRepository userRepository, FriendRepository friendRepository) {
+  public UserNotificationService(UserNotificationRepository userNotificationRepository, UserRepository userRepository,
+      FriendRepository friendRepository) {
     this.userNotificationRepository = userNotificationRepository;
     this.userRepository = userRepository;
     this.friendRepository = friendRepository;
@@ -32,45 +33,40 @@ public class UserNotificationService {
       return new ArrayList<>();
     int i = 0;
     List<UserNotificationDTO> notifications = new ArrayList<>(userNotificationRepository.findByUserId(user.getId())
-    .stream()
-    .map(n -> {
-      UserNotificationDTO dto = new UserNotificationDTO();
-      dto.setDescription(n.getDescription());
-      dto.setSource(n.getSource());
-      dto.setDate(n.getDate());
-      dto.setType(n.getType());
-      dto.setStatus(n.getStatus());
-      if(n.getSource().equals("admin")){
-        dto.setImgurl("https://i.postimg.cc/J7PTgqcW/24bdeecd546a2c6b7e34857a104afe68.jpg");
-      }
-      else{
-        dto.setImgurl(userRepository.findImgurlByUsername(n.getSource()));
-      }
-      return dto;
-    })
-    .toList());//immutable list return gareko vara
+        .stream()
+        .map(n -> {
+          UserNotificationDTO dto = new UserNotificationDTO();
+          dto.setDescription(n.getDescription());
+          dto.setSource(n.getSource());
+          dto.setDate(n.getDate());
+          dto.setType(userRepository.findTypeByUsername(n.getSource()));
+          dto.setRequestType(n.getType());
+          dto.setStatus(n.getStatus());
+          dto.setImgurl(userRepository.findImgurlByUsername(n.getSource()));
+          return dto;
+        })
+        .toList());// immutable list return gareko vara
 
     List<UserNotificationDTO> friendNotifications = friendRepository.findByUserId(user.getId()).stream().map(n -> {
       UserNotificationDTO dto = new UserNotificationDTO();
       String friendEmail = userRepository.findEmailById(n.getId());
       User u = userRepository.findByEmail(friendEmail);
-      if(n.getStatus().equals("pending")){
+      if (n.getStatus().equals("pending")) {
         dto.setDescription("You have received follow request from " + u.getName());
-      }
-      else if(n.getStatus().equals("accepted")){
+      } else if (n.getStatus().equals("accepted")) {
         dto.setDescription("You have accepted follow request from " + u.getName());
-      }
-      else{
+      } else {
         dto.setDescription("You have declined follow request from " + u.getName());
       }
+      dto.setType(u.getType());
       dto.setDate(n.getDate());
       dto.setImgurl(u.getImgurl());
       dto.setSource(u.getUsername());
-      dto.setType("friend request");
+      dto.setRequestType("friend request");
       dto.setStatus(n.getStatus());
       return dto;
     }).toList();
-    
+
     notifications.addAll(friendNotifications);
     notifications.sort(Comparator.comparing(UserNotificationDTO::getDate).reversed());
 

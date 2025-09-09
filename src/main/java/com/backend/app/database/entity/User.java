@@ -2,6 +2,9 @@ package com.backend.app.database.entity;
 
 import jakarta.persistence.Entity;
 import org.springframework.stereotype.Component;
+
+import com.backend.app.database.Enum.AccountType;
+
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 
@@ -19,7 +22,9 @@ public class User {
   private String password;
   private String imgurl;
   private String username;
-
+  @Column(name = "account_type")
+  @Enumerated(EnumType.STRING)
+  private AccountType type;
   public Long getId(){
     return id;
   }
@@ -67,5 +72,12 @@ public class User {
   }
   public void setUsername(String username){
     this.username = username;
+  }
+
+  public AccountType getType(){
+    return type;
+  }
+  public void setType(AccountType type){
+    this.type = type;
   }
 }

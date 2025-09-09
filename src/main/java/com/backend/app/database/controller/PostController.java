@@ -6,8 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backend.app.database.service.PostService;
 import com.backend.app.dto.PostDTO;
+import com.backend.app.dto.ReceivePostDTO;
+import com.backend.app.dto.UserDTO;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -20,8 +27,11 @@ public class PostController {
 
   @PostMapping("/post")
   public String postMethodName(@RequestBody PostDTO dt) {
-      postService.publichPost(dt);
-      return "";
+      return postService.publishPost(dt);
   }
-  
+
+  @GetMapping("/discover")
+  public ReceivePostDTO getMethodName(@RequestHeader("offset") int offset) {
+      return postService.discoverPosts(offset);
+  }
 }

@@ -2,13 +2,16 @@ package com.backend.app.dto;
 
 import java.time.OffsetDateTime;
 
+import com.backend.app.database.Enum.AccountType;
+
 public class UserNotificationDTO {
   private String description;
   private String source;
   private OffsetDateTime date;
   private String imgurl;
-  private String type;
+  private String requestType;
   private String status;
+  private AccountType type;
 
   public String getDescription(){
     return description;
@@ -38,11 +41,11 @@ public class UserNotificationDTO {
     this.imgurl = imgurl;
   }
 
-  public String getType(){
-    return type;
+  public String getrequestType(){
+    return requestType;
   }
-  public void setType(String type){
-    this.type = type;
+  public void setRequestType(String requestType){
+    this.requestType = requestType;
   }
 
   public String getStatus() {
@@ -50,5 +53,12 @@ public class UserNotificationDTO {
   }
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public AccountType getType(){
+    return type;
+  }
+  public void setType(AccountType type){
+    this.type = type;
   }
 }

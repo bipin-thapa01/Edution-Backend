@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.backend.app.database.Enum.AccountType;
 import com.backend.app.database.entity.*;
 
 @Repository
@@ -22,4 +23,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
   @Query("SELECT u.id from User u where u.username = :username")
   public Long findIdByUsername(String username);
+
+  @Query("SELECT u.type from User u WHERE u.username = :username")
+  public AccountType findTypeByUsername(String username);
+
+  @Query("select u.username from User u where u.id = :id")
+  public String findUsernameById(Long id);
 }

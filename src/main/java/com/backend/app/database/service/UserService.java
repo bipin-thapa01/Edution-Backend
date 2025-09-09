@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.backend.app.JwtUtil;
+import com.backend.app.database.Enum.AccountType;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.ResponseDTO;
@@ -57,7 +58,7 @@ public class UserService {
     userToBeInserted.setPassword(dt.getPassword());
     userToBeInserted.setRoomCode(dt.getCode());
     userToBeInserted.setImgurl("https://i.postimg.cc/bNsWB5RP/e7df128ed6ca1c2afdedb5d12eaff0be.jpg");
-
+    userToBeInserted.setType(AccountType.BASIC);
     userRepository.save(userToBeInserted);
 
     responseDTO.setResponse("Account Created Successfully");
