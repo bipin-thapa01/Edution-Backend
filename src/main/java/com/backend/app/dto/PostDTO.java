@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 
 public class PostDTO {
   private OffsetDateTime createdAt;
+  private String profileUrl;
   private String by;
   private String description;
   private String imgurl;
@@ -29,6 +30,13 @@ public class PostDTO {
   }
   public void setDescription(String description){
     this.description = description;
+  }
+
+  public String getProfileUrl(){
+    return profileUrl;
+  }
+  public void setProfileUrl(String profileUrl){
+    this.profileUrl = profileUrl;
   }
 
   public String getImgurl(){

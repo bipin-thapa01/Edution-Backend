@@ -16,7 +16,7 @@ public class ReceivePostDTO {
   public String getResponse(){
     return response;
   }
-  public void getResponse(String response){
+  public void setResponse(String response){
     this.response = response;
   }
 }

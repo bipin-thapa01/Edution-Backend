@@ -38,6 +38,7 @@ public class PostService {
       for(Post post : posts){
         PostDTO postDto =  new PostDTO();
         postDto.setBy(userRepository.findUsernameById(post.getBy()));
+        postDto.setProfileUrl(userRepository.findImgurlByUsername(postDto.getBy()));
         postDto.setCreatedAt(post.getCreatedAt());
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
@@ -46,7 +47,7 @@ public class PostService {
         postDTOs.add(postDto);
       }
       dt.setPosts(postDTOs);
-      dt.getResponse("success");
+      dt.setResponse("success");
       return dt;
   }
 }
