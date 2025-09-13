@@ -20,6 +20,8 @@ public class Post {
   private String imgurl;
   private Long star;
   private Long save;
+  private boolean repost;
+  private Long repostCount;
 
   public Long getId(){
     return id;
@@ -68,5 +70,19 @@ public class Post {
   }
   public void setSave(Long save){
     this.save = save;
+  }
+
+  public boolean getRepost(){
+    return repost;
+  }
+  public void setRepost(boolean repost){
+    this.repost = repost;
+  }
+
+  public Long getRepostCount(){
+    return repostCount;
+  }
+  public void setRepostCount(Long repostCount){
+    this.repostCount = repostCount;
   }
 }

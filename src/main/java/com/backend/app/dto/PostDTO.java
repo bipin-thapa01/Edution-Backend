@@ -1,6 +1,7 @@
 package com.backend.app.dto;
 
 import java.time.OffsetDateTime;
+import com.backend.app.database.Enum.AccountType;
 
 public class PostDTO {
   private OffsetDateTime createdAt;
@@ -10,6 +11,10 @@ public class PostDTO {
   private String imgurl;
   private Long star;
   private Long save;
+  private boolean repost;
+  private AccountType type;
+
+  private Long repostCount;
 
   public OffsetDateTime getCreatedAt(){
     return createdAt;
@@ -58,5 +63,26 @@ public class PostDTO {
   }
   public void setSave(Long save){
     this.save = save;
+  }
+
+  public boolean getRepost(){
+    return repost;
+  }
+  public void setRepost(boolean repost){
+    this.repost = repost;
+  }
+
+  public Long getRepostCount(){
+    return repostCount;
+  }
+  public void setRepostCount(Long repostCount){
+    this.repostCount = repostCount;
+  }
+
+  public AccountType getType(){
+    return type;
+  }
+  public void setType(AccountType type){
+    this.type = type;
   }
 }

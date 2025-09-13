@@ -3,10 +3,12 @@ package com.backend.app.database.service;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backend.app.database.entity.Post;
+import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.PostRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.PostDTO;
@@ -27,6 +29,8 @@ public class PostService {
     post.setImgurl(dt.getImgurl());
     post.setStar(Long.valueOf(0));
     post.setSave(Long.valueOf(0));
+    post.setRepost(false);
+    post.setRepostCount(Long.valueOf(0));
     postRepository.save(post);
     return "posted successfully";
   }
@@ -37,13 +41,18 @@ public class PostService {
       List<PostDTO> postDTOs = new ArrayList<>();
       for(Post post : posts){
         PostDTO postDto =  new PostDTO();
-        postDto.setBy(userRepository.findUsernameById(post.getBy()));
-        postDto.setProfileUrl(userRepository.findImgurlByUsername(postDto.getBy()));
+        Optional<User> userOpt = userRepository.findById(post.getBy());
+        User user = userOpt.get();
+        postDto.setBy(user.getUsername());
+        postDto.setProfileUrl(user.getImgurl());
         postDto.setCreatedAt(post.getCreatedAt());
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
         postDto.setSave(post.getStar());
         postDto.setStar(post.getStar());
+        postDto.setRepost(post.getRepost());
+        postDto.setRepostCount(post.getRepostCount());
+        postDto.setType(user.getType());
         postDTOs.add(postDto);
       }
       dt.setPosts(postDTOs);
