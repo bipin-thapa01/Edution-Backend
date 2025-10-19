@@ -12,11 +12,30 @@ import com.backend.app.database.entity.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query(
-        value = "SELECT * FROM post ORDER BY id DESC LIMIT :limit OFFSET :offset",
-        nativeQuery = true
-    )
+    @Query(value = "SELECT * FROM post ORDER BY id DESC LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<Post> getDiscoverPosts(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = """
+            SELECT *
+            FROM post
+            WHERE "by" IN (
+                SELECT friend_id
+                FROM friend
+                WHERE user_id = (SELECT id FROM users WHERE username = :username)
+
+                UNION
+
+                SELECT user_id
+                FROM friend
+                WHERE friend_id = (SELECT id FROM users WHERE username = :username)
+            )
+            AND "by" <> (SELECT id FROM users WHERE username = :username)
+            ORDER BY id DESC
+            LIMIT :limit OFFSET :offset
+                """, nativeQuery = true)
+    List<Post> getFollowingPosts(
+            @Param("limit") int limit,
+            @Param("offset") int offset,
+            @Param("username") String username);
+
 }
-
-

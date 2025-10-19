@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins= "http://localhost:3000")
@@ -26,12 +24,18 @@ public class PostController {
   PostService postService;
 
   @PostMapping("/post")
-  public String postMethodName(@RequestBody PostDTO dt) {
+  public String postPosts(@RequestBody PostDTO dt) {
       return postService.publishPost(dt);
   }
 
   @GetMapping("/discover")
-  public ReceivePostDTO getMethodName(@RequestHeader("offset") int offset) {
+  public ReceivePostDTO getDiscoverPost(@RequestHeader("offset") int offset) {
       return postService.discoverPosts(offset);
   }
+
+  @GetMapping("/following")
+  public ReceivePostDTO getFollowingPost(@RequestHeader("offset") int offset, @RequestHeader("username") String username) {
+      return postService.followingPosts(offset, username);
+  }
+  
 }

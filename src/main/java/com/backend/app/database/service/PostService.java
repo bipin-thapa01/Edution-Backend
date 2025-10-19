@@ -59,4 +59,29 @@ public class PostService {
       dt.setResponse("success");
       return dt;
   }
+
+  public ReceivePostDTO followingPosts(int offset, String username){
+    ReceivePostDTO dt = new ReceivePostDTO();
+    List<Post> posts = postRepository.getFollowingPosts(20, offset, username);
+    List<PostDTO> postDTOs = new ArrayList<>();
+    for(Post post : posts){
+      PostDTO postDto =  new PostDTO();
+        Optional<User> userOpt = userRepository.findById(post.getBy());
+        User user = userOpt.get();
+        postDto.setBy(user.getUsername());
+        postDto.setProfileUrl(user.getImgurl());
+        postDto.setCreatedAt(post.getCreatedAt());
+        postDto.setDescription(post.getDescription());
+        postDto.setImgurl(post.getImgurl());
+        postDto.setSave(post.getStar());
+        postDto.setStar(post.getStar());
+        postDto.setRepost(post.getRepost());
+        postDto.setRepostCount(post.getRepostCount());
+        postDto.setType(user.getType());
+        postDTOs.add(postDto);
+      }
+      dt.setPosts(postDTOs);
+      dt.setResponse("success");
+      return dt;
+  }
 }
