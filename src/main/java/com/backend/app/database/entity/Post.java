@@ -1,7 +1,6 @@
 package com.backend.app.database.entity;
 
 import java.time.OffsetDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

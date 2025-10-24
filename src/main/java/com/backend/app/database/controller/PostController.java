@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.app.database.service.PostService;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.ReceivePostDTO;
-import com.backend.app.dto.UserDTO;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,13 +27,23 @@ public class PostController {
   }
 
   @GetMapping("/discover")
-  public ReceivePostDTO getDiscoverPost(@RequestHeader("offset") int offset) {
-      return postService.discoverPosts(offset);
+  public ReceivePostDTO getDiscoverPost(@RequestHeader("offset") int offset, @RequestHeader("username") String username) {
+      return postService.discoverPosts(offset, username);
   }
 
   @GetMapping("/following")
   public ReceivePostDTO getFollowingPost(@RequestHeader("offset") int offset, @RequestHeader("username") String username) {
       return postService.followingPosts(offset, username);
+  }
+  
+  @PostMapping("/star")
+  public String starPost(@RequestBody Long id) {
+      return postService.updateStar(id, true);
+  }
+  
+  @PostMapping("/unstar")
+  public String unstarPost(@RequestBody Long id) {
+      return postService.updateStar(id, false);
   }
   
 }

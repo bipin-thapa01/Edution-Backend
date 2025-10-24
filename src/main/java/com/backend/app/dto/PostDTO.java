@@ -9,8 +9,10 @@ public class PostDTO {
   private String by;
   private String description;
   private String imgurl;
+  private Long id;
   private Long star;
   private Long save;
+  private boolean isStarred;
   private boolean repost;
   private AccountType type;
 
@@ -28,6 +30,20 @@ public class PostDTO {
   }
   public void setBy(String by){
     this.by = by;
+  }
+
+  public Long getId(){
+    return id;
+  }
+  public void setId(Long id){
+    this.id = id;
+  }
+
+  public boolean getIsStarred(){
+    return isStarred;
+  }
+  public void setIsStarred(boolean isStarred){
+    this.isStarred = isStarred;
   }
 
   public String getDescription(){

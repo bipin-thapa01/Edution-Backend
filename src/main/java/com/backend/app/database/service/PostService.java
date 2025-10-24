@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.backend.app.database.entity.Post;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.PostRepository;
+import com.backend.app.database.repository.StarRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.ReceivePostDTO;
@@ -20,6 +21,8 @@ public class PostService {
   PostRepository postRepository;
   @Autowired
   UserRepository userRepository;
+  @Autowired
+  StarRepository starRepository;
   
   public String publishPost(PostDTO dt){
     Post post = new Post();
@@ -35,7 +38,7 @@ public class PostService {
     return "posted successfully";
   }
 
-  public ReceivePostDTO discoverPosts(int offset){
+  public ReceivePostDTO discoverPosts(int offset, String username){
       ReceivePostDTO dt = new ReceivePostDTO();
       List<Post> posts = postRepository.getDiscoverPosts(20, offset);
       List<PostDTO> postDTOs = new ArrayList<>();
@@ -48,6 +51,14 @@ public class PostService {
         postDto.setCreatedAt(post.getCreatedAt());
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
+        Long id = userRepository.findIdByUsername(username);
+        postDto.setId(id);
+        if(starRepository.isStarred(post.getId(), id) != null){
+          postDto.setIsStarred(true);
+        }
+        else{
+          postDto.setIsStarred(false);
+        }
         postDto.setSave(post.getStar());
         postDto.setStar(post.getStar());
         postDto.setRepost(post.getRepost());
@@ -74,6 +85,14 @@ public class PostService {
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
         postDto.setSave(post.getStar());
+        Long id = userRepository.findIdByUsername(username);
+        postDto.setId(id);
+        if(starRepository.isStarred(post.getId(), id) != null){
+          postDto.setIsStarred(true);
+        }
+        else{
+          postDto.setIsStarred(false);
+        }
         postDto.setStar(post.getStar());
         postDto.setRepost(post.getRepost());
         postDto.setRepostCount(post.getRepostCount());
@@ -83,5 +102,27 @@ public class PostService {
       dt.setPosts(postDTOs);
       dt.setResponse("success");
       return dt;
+  }
+
+  public String updateStar(Long id, boolean increaseStar){
+    if(increaseStar){
+      starRepository.addStar(id)
+      int n = postRepository.increaseStar(id);
+      if(n == 1){
+        return "success";
+      }
+      else{
+        return "unsuccess";
+      }
+    }
+    else{
+      int n = postRepository.decreaseStar(id);
+      if(n == 1){
+        return "success";
+      }
+      else{
+        return "unsuccess";
+      }
+    }
   }
 }

@@ -2,11 +2,9 @@ package com.backend.app.database.entity;
 
 import jakarta.persistence.Entity;
 import org.springframework.stereotype.Component;
-
 import com.backend.app.database.Enum.AccountType;
-
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
+
 
 @Component
 @Entity
