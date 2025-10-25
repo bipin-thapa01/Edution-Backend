@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.app.database.service.PostService;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.ReceivePostDTO;
+import com.backend.app.dto.ResponseDTO;
+import com.backend.app.dto.StarDTO;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -37,13 +40,18 @@ public class PostController {
   }
   
   @PostMapping("/star")
-  public String starPost(@RequestBody Long id) {
-      return postService.updateStar(id, true);
+  public ResponseDTO starPost(@RequestBody StarDTO starDTO) {
+      return postService.updateStar(starDTO, true);
   }
   
   @PostMapping("/unstar")
-  public String unstarPost(@RequestBody Long id) {
-      return postService.updateStar(id, false);
+  public ResponseDTO unstarPost(@RequestBody StarDTO starDTO) {
+      return postService.updateStar(starDTO, false);
+  }
+  
+  @GetMapping("/specific-post")
+  public PostDTO getMethodName(@RequestHeader("postId") Long postId, @RequestHeader("userId") Long userId) {
+      return postService.getPost(postId, userId);
   }
   
 }

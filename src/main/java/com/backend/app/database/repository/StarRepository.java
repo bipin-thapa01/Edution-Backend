@@ -18,4 +18,9 @@ public interface StarRepository extends JpaRepository<Star,Long>{
   @Transactional
   @Query("Insert INTO Star(postId, userId) values(:postId, :userId)")
   int addStar(Long postId, Long userId);
+
+  @Modifying
+  @Transactional
+  @Query("DELETE FROM Star WHERE postId = :postId and userId = :userId")
+  int removeStar(Long postId, Long userId);
 }

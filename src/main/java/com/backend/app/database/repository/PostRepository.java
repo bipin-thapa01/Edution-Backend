@@ -51,4 +51,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Transactional
     @Query("UPDATE Post set star = star - 1 where id = :id")
     int decreaseStar(Long id);
+
+    @Query(value = "SELECT * FROM post where post_id = :postId", nativeQuery = true)
+    Post findPost(Long postId);
 }

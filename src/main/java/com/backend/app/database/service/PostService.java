@@ -14,6 +14,8 @@ import com.backend.app.database.repository.StarRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.ReceivePostDTO;
+import com.backend.app.dto.ResponseDTO;
+import com.backend.app.dto.StarDTO;
 
 @Service
 public class PostService {
@@ -52,14 +54,15 @@ public class PostService {
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
         Long id = userRepository.findIdByUsername(username);
-        postDto.setId(id);
+        postDto.setUserId(id);
+        postDto.setPostId(post.getId());
         if(starRepository.isStarred(post.getId(), id) != null){
           postDto.setIsStarred(true);
         }
         else{
           postDto.setIsStarred(false);
         }
-        postDto.setSave(post.getStar());
+        postDto.setSave(post.getSave());
         postDto.setStar(post.getStar());
         postDto.setRepost(post.getRepost());
         postDto.setRepostCount(post.getRepostCount());
@@ -86,7 +89,8 @@ public class PostService {
         postDto.setImgurl(post.getImgurl());
         postDto.setSave(post.getStar());
         Long id = userRepository.findIdByUsername(username);
-        postDto.setId(id);
+        postDto.setUserId(id);
+        postDto.setPostId(post.getId());
         if(starRepository.isStarred(post.getId(), id) != null){
           postDto.setIsStarred(true);
         }
@@ -104,25 +108,42 @@ public class PostService {
       return dt;
   }
 
-  public String updateStar(Long id, boolean increaseStar){
+  public ResponseDTO updateStar(StarDTO starDTO, boolean increaseStar){
+    ResponseDTO responseDTO = new ResponseDTO();
     if(increaseStar){
-      starRepository.addStar(id)
-      int n = postRepository.increaseStar(id);
-      if(n == 1){
-        return "success";
+      int n1 = starRepository.addStar(starDTO.getPostId(), starDTO.getUserId());
+      int n2 = postRepository.increaseStar(starDTO.getPostId());
+      if(n1 == 1 && n2 == 1){
+        responseDTO.setResponse("success");
+        return responseDTO;
       }
       else{
-        return "unsuccess";
+        responseDTO.setResponse("unsuccess");
+        return responseDTO;
       }
     }
     else{
-      int n = postRepository.decreaseStar(id);
-      if(n == 1){
-        return "success";
+      int n1 = starRepository.removeStar(starDTO.getPostId(), starDTO.getUserId());
+      int n2 = postRepository.decreaseStar(starDTO.getPostId());
+      if(n1 == 1 && n2 == 1){
+        responseDTO.setResponse("success");
+        return responseDTO;
       }
       else{
-        return "unsuccess";
+        responseDTO.setResponse("unsuccess");
+        return responseDTO;
       }
     }
+  }
+
+  public PostDTO getPost(Long postId, Long userId){
+    PostDTO postDTO = new PostDTO();
+    if(starRepository.isStarred(postId, userId) != null){
+      postDTO.setIsStarred(true);
+    }
+    else{
+      postDTO.setIsStarred(false);
+    }
+    return postDTO;
   }
 }
