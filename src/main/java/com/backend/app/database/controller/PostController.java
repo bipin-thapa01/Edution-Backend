@@ -50,8 +50,7 @@ public class PostController {
   }
   
   @GetMapping("/specific-post")
-  public PostDTO getMethodName(@RequestHeader("postId") Long postId, @RequestHeader("userId") Long userId) {
+  public PostDTO getSpecificPost(@RequestHeader("postId") Long postId, @RequestHeader("userId") Long userId) {
       return postService.getPost(postId, userId);
   }
-  
 }

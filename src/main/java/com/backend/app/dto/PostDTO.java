@@ -14,6 +14,7 @@ public class PostDTO {
   private Long star;
   private Long save;
   private boolean isStarred;
+  private boolean isBookmarked;
   private boolean repost;
   private AccountType type;
 
@@ -52,6 +53,13 @@ public class PostDTO {
   }
   public void setIsStarred(boolean isStarred){
     this.isStarred = isStarred;
+  }
+
+  public boolean getIsBookmarked(){
+    return isBookmarked;
+  }
+  public void setIsBookmarked(boolean isBookmarked){
+    this.isBookmarked = isBookmarked;
   }
 
   public String getDescription(){

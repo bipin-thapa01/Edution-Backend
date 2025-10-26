@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.backend.app.database.entity.Post;
 import com.backend.app.database.entity.User;
+import com.backend.app.database.repository.BookmarkRepository;
 import com.backend.app.database.repository.PostRepository;
 import com.backend.app.database.repository.StarRepository;
 import com.backend.app.database.repository.UserRepository;
@@ -25,6 +26,8 @@ public class PostService {
   UserRepository userRepository;
   @Autowired
   StarRepository starRepository;
+  @Autowired
+  BookmarkRepository bookmarkRepository;
   
   public String publishPost(PostDTO dt){
     Post post = new Post();
@@ -62,6 +65,12 @@ public class PostService {
         else{
           postDto.setIsStarred(false);
         }
+        if(bookmarkRepository.checkBookmark(post.getId(), id) != null){
+          postDto.setIsBookmarked(true);
+        }
+        else{
+          postDto.setIsBookmarked(false);
+        }
         postDto.setSave(post.getSave());
         postDto.setStar(post.getStar());
         postDto.setRepost(post.getRepost());
@@ -87,7 +96,7 @@ public class PostService {
         postDto.setCreatedAt(post.getCreatedAt());
         postDto.setDescription(post.getDescription());
         postDto.setImgurl(post.getImgurl());
-        postDto.setSave(post.getStar());
+        postDto.setSave(post.getSave());
         Long id = userRepository.findIdByUsername(username);
         postDto.setUserId(id);
         postDto.setPostId(post.getId());
@@ -96,6 +105,12 @@ public class PostService {
         }
         else{
           postDto.setIsStarred(false);
+        }
+        if(bookmarkRepository.checkBookmark(post.getId(), id) != null){
+          postDto.setIsBookmarked(true);
+        }
+        else{
+          postDto.setIsBookmarked(false);
         }
         postDto.setStar(post.getStar());
         postDto.setRepost(post.getRepost());

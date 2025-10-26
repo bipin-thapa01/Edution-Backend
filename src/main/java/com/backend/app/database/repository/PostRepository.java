@@ -54,4 +54,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = "SELECT * FROM post where post_id = :postId", nativeQuery = true)
     Post findPost(Long postId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Post set save = save + 1 where id = :id")
+    int increaseSave(Long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Post set save = save - 1 where id = :id")
+    int decreaseSave(Long id);
 }
