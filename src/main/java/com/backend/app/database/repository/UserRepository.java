@@ -18,15 +18,30 @@ public interface UserRepository extends JpaRepository<User, Long>{
   @Query("SELECT u.imgurl FROM User u WHERE u.username = :username")
   public String findImgurlByUsername(String username);
 
+  @Query("SELECT u.imgurl FROM User u WHERE u.email = :email")
+  public String findImgurlByEmail(String email);
+
+  @Query("SELECT u.imgurl FROM User u WHERE u.id = :id")
+  public String findImgurlById(Long id);
+
   @Query("SELECT u.email FROM User u WHERE u.id = :id")
   public String findEmailById(Long id);
 
   @Query("SELECT u.id from User u where u.username = :username")
   public Long findIdByUsername(String username);
 
+  @Query("SELECT u.id from User u where u.email = :email")
+  public Long findIdByEmail(String email);
+
   @Query("SELECT u.type from User u WHERE u.username = :username")
   public AccountType findTypeByUsername(String username);
 
   @Query("select u.username from User u where u.id = :id")
   public String findUsernameById(Long id);
+
+  @Query("SELECT u.type from User u where u.email = :email")
+  public AccountType findTypeByEmail(String email);
+
+  @Query("SELECT u.name from User u where u.email = :email")
+  public String findNameByEmail(String email);
 }

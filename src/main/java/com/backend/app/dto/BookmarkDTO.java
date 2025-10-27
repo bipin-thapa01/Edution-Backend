@@ -11,6 +11,9 @@ public class BookmarkDTO {
   private BookmarkType bookmark;
   private Long bookmarkId;
   private Long userId;
+  private String username;
+  private String profileUrl;
+  private String postDesc;
   private UserDTO user;
   private OffsetDateTime createdAt;
   private PostDTO post;
@@ -35,6 +38,27 @@ public class BookmarkDTO {
   }
   public void setUserId(Long userId){
     this.userId = userId;
+  }
+
+  public String getUsername(){
+    return username;
+  }
+  public void setUsername(String username){
+    this.username = username;
+  }
+
+  public String getProfileUrl(){
+    return profileUrl;
+  }
+  public void setProfileUrl(String profileUrl){
+    this.profileUrl = profileUrl;
+  }
+
+  public String getPostDesc(){
+    return postDesc;
+  }
+  public void setPostDesc(String postDesc){
+    this.postDesc = postDesc;
   }
 
   public Long getBookmarkId(){
