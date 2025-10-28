@@ -50,7 +50,7 @@ public class BookmarkService {
     responseDTO.setResponse("success");
     UserDTO userDTO = new UserDTO();
     Long id = userRepository.findIdByEmail(email);
-    userDTO.setUsername(userRepository.findUsernameById(id));
+    userDTO.setUsername(userRepository.findUsernameById(userRepository.findIdByEmail(email)));
     userDTO.setImgurl(userRepository.findImgurlByEmail(email));
     userDTO.setType(userRepository.findTypeByEmail(email));
     userDTO.setName(userRepository.findNameByEmail(email));
