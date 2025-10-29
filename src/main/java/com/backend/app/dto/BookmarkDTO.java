@@ -14,6 +14,7 @@ public class BookmarkDTO {
   private String username;
   private String profileUrl;
   private String postDesc;
+  private String postUrl;
   private UserDTO user;
   private OffsetDateTime createdAt;
   private PostDTO post;
@@ -52,6 +53,13 @@ public class BookmarkDTO {
   }
   public void setProfileUrl(String profileUrl){
     this.profileUrl = profileUrl;
+  }
+
+  public String getPostUrl(){
+    return postUrl;
+  }
+  public void setPostUrl(String postUrl){
+    this.postUrl = postUrl;
   }
 
   public String getPostDesc(){

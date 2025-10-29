@@ -67,4 +67,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p.description FROM Post p WHERE p.id = :id")
     String findPostDescription(Long id);
+
+    @Query("SELECT p.imgurl from Post p where p.id = :id")
+    String findPostUrl(Long id);
 }

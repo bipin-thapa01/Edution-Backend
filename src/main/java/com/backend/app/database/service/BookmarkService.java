@@ -40,6 +40,7 @@ public class BookmarkService {
         bookmarkDTO.setProfileUrl(userRepository.findImgurlById(bookmark.getUserId()));
         bookmarkDTO.setPostDesc(postRepository.findPostDescription(bookmark.getBookmarkId()));
         bookmarkDTO.setUsername(userRepository.findUsernameById(bookmark.getUserId()));
+        bookmarkDTO.setPostUrl(postRepository.findPostUrl(bookmark.getBookmarkId()));
         bookmarkDTOs.add(bookmarkDTO);
       }
     }
