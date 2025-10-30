@@ -1,5 +1,8 @@
 package com.backend.app.database.repository;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,7 +11,7 @@ import com.backend.app.database.Enum.AccountType;
 import com.backend.app.database.entity.*;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
   public User findByEmail(String email);
 
   public User findByEmailAndPassword(String email, String password);
@@ -44,4 +47,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
   @Query("SELECT u.name from User u where u.email = :email")
   public String findNameByEmail(String email);
+
+  @Query("SELECT u FROM User u where not u.username = 'admin'  ORDER BY u.id DESC")
+  List<User> findLatestFiveUsers(Pageable pageable);
 }
