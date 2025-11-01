@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.backend.app.database.Enum.AccountType;
@@ -50,4 +51,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("SELECT u FROM User u where u.username <> 'admin' and u.username <> :username  ORDER BY u.id DESC")
   List<User> findLatestFiveUsers(String username, Pageable pageable);
+
+  @Query("SELECT u FROM User u where u.username LIKE CONCAT(:key, '%')")
+  List<User> findUsersByKey(@Param("key") String key);
 }

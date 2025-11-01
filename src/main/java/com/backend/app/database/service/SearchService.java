@@ -52,9 +52,27 @@ public class SearchService {
     return searchResponseDTO;
   }
 
-  // public SearchResponseDTO fetchSearchData(String key){
-
-  // }
+  public SearchResponseDTO fetchSearchData(String key, String type){
+    SearchResponseDTO searchResponseDTO = new SearchResponseDTO();
+    if(type.equals("user")){
+      List<User> users = userRepository.findUsersByKey(key);
+      List<UserDTO> userDTOs = new ArrayList<>();
+      for(User user : users){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName(user.getName());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setImgurl(user.getImgurl());
+        userDTO.setType(user.getType());
+        userDTOs.add(userDTO);
+      }
+      searchResponseDTO.setUserDTOs(userDTOs);
+    }
+    if(searchResponseDTO.getUserDTOs()!=null || searchResponseDTO.getPostDTOs()!=null){
+      searchResponseDTO.setRes("valid");
+    }
+    return searchResponseDTO;
+  }
 
   public boolean isFriendService(String username, String friend){
     Long id1 = userRepository.findIdByUsername(username);

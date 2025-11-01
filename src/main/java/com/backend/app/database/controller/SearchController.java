@@ -26,10 +26,10 @@ public class SearchController {
     this.searchService = searchService;
   }
 
-  // @GetMapping("/search")
-  // public SearchResponseDTO fetchDetails(@RequestHeader("key") String key, @RequestHeader("type") String type) {
-  //     return searchService.fetchSearchData(key);
-  // }
+  @GetMapping("/search")
+  public SearchResponseDTO fetchDetails(@RequestHeader("key") String key, @RequestHeader("type") String type) {
+      return searchService.fetchSearchData(key,type);
+  }
 
   @GetMapping("/is-friend")
   public ResponseDTO isFriendController(@RequestHeader("username") String username, @RequestHeader("friend") String friend) {
