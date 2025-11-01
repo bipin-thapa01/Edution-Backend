@@ -48,6 +48,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("SELECT u.name from User u where u.email = :email")
   public String findNameByEmail(String email);
 
-  @Query("SELECT u FROM User u where not u.username = 'admin'  ORDER BY u.id DESC")
-  List<User> findLatestFiveUsers(Pageable pageable);
+  @Query("SELECT u FROM User u where u.username <> 'admin' and u.username <> :username  ORDER BY u.id DESC")
+  List<User> findLatestFiveUsers(String username, Pageable pageable);
 }
