@@ -27,8 +27,8 @@ public class SearchController {
   }
 
   @GetMapping("/search")
-  public SearchResponseDTO fetchDetails(@RequestHeader("key") String key, @RequestHeader("type") String type) {
-      return searchService.fetchSearchData(key,type);
+  public SearchResponseDTO fetchDetails(@RequestHeader("key") String key) {
+      return searchService.fetchSearchData(key);
   }
 
   @GetMapping("/is-friend")

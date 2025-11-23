@@ -70,4 +70,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p.imgurl from Post p where p.id = :id")
     String findPostUrl(Long id);
+
+    @Query("SELECT p from Post p where LOWER(p.description) LIKE LOWER(CONCAT('%', :key, '%'))")
+    List<Post> findPostsByKey(String key);
 }

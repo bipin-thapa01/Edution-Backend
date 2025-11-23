@@ -52,6 +52,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("SELECT u FROM User u where u.username <> 'admin' and u.username <> :username  ORDER BY u.id DESC")
   List<User> findLatestFiveUsers(String username, Pageable pageable);
 
-  @Query("SELECT u FROM User u where u.username LIKE CONCAT(:key, '%')")
+  @Query("SELECT u FROM User u where LOWER(u.username) LIKE LOWER(CONCAT('%', :key, '%')) OR LOWER(u.name) LIKE LOWER(CONCAT('%', :key, '%'))")
   List<User> findUsersByKey(@Param("key") String key);
 }
