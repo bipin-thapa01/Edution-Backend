@@ -1,8 +1,6 @@
 package com.backend.app.database.repository;
 
-import java.beans.Transient;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -73,4 +71,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p from Post p where LOWER(p.description) LIKE LOWER(CONCAT('%', :key, '%'))")
     List<Post> findPostsByKey(String key);
+
+    @Query("SELECT p from Post p where p.by = :id")
+    List<Post> findPostByUserId(Long id, org.springframework.data.domain.Pageable pageable);
 }

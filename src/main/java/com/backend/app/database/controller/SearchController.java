@@ -11,8 +11,6 @@ import com.backend.app.database.service.FriendService;
 import com.backend.app.database.service.SearchService;
 import com.backend.app.dto.ResponseDTO;
 import com.backend.app.dto.SearchResponseDTO;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api")
@@ -27,8 +25,8 @@ public class SearchController {
   }
 
   @GetMapping("/search")
-  public SearchResponseDTO fetchDetails(@RequestHeader("key") String key) {
-      return searchService.fetchSearchData(key);
+  public SearchResponseDTO fetchDetails(@RequestHeader("key") String key, @RequestHeader("username") String username) {
+      return searchService.fetchSearchData(key, username);
   }
 
   @GetMapping("/is-friend")

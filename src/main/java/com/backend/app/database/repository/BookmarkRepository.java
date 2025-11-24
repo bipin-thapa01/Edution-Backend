@@ -5,11 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import com.backend.app.database.Enum.BookmarkType;
 import com.backend.app.database.entity.Bookmark;
-import com.backend.app.dto.BookmarkDTO;
-
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 

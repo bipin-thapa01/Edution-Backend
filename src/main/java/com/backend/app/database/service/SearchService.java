@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.Post;
 import com.backend.app.database.entity.User;
+import com.backend.app.database.repository.BookmarkRepository;
 import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.PostRepository;
+import com.backend.app.database.repository.StarRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.SearchResponseDTO;
@@ -21,12 +21,17 @@ public class SearchService {
   private UserRepository userRepository;
   private PostRepository postRepository;
   private FriendRepository friendRepository;
+  private StarRepository starRepository;
+  private BookmarkRepository bookmarkRepository;
 
   public SearchService(UserRepository userRepository, PostRepository postRepository,
-      FriendRepository friendRepository) {
+      FriendRepository friendRepository,
+    StarRepository starRepository, BookmarkRepository bookmarkRepository) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
     this.friendRepository = friendRepository;
+    this.starRepository = starRepository;
+    this.bookmarkRepository = bookmarkRepository;
   }
 
   public SearchResponseDTO fetchDefaultUsers(String email) {
@@ -56,7 +61,8 @@ public class SearchService {
     return searchResponseDTO;
   }
 
-  public SearchResponseDTO fetchSearchData(String key) {
+  public SearchResponseDTO fetchSearchData(String key, String username) {
+    Long id = userRepository.findIdByUsername(username);
     SearchResponseDTO searchResponseDTO = new SearchResponseDTO();
     List<User> users = userRepository.findUsersByKey(key);
     List<UserDTO> userDTOs = new ArrayList<>();
@@ -78,7 +84,24 @@ public class SearchService {
       postDTO.setBy(userRepository.findUsernameById(post.getBy()));
       postDTO.setDescription(post.getDescription());
       postDTO.setImgurl(post.getImgurl());
+      postDTO.setStar(post.getStar());
+      postDTO.setSave(post.getSave());
       postDTO.setProfileUrl(userRepository.findImgurlById(post.getBy()));
+      postDTO.setUserId(id);
+      postDTO.setPostId(post.getId());
+      postDTO.setType(userRepository.findTypeByUsername(username));
+      if(starRepository.isStarred(post.getId(), id) != null){
+        postDTO.setIsStarred(true);
+      }
+      else{
+        postDTO.setIsStarred(false);
+      }
+      if(bookmarkRepository.checkBookmark(post.getId(), id) != null){
+        postDTO.setIsBookmarked(true);
+      }
+      else{
+        postDTO.setIsBookmarked(false);
+      }
       postDTOs.add(postDTO);
     }
     searchResponseDTO.setPostDTO(postDTOs);

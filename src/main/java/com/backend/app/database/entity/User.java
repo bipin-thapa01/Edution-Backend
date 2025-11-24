@@ -1,6 +1,7 @@
 package com.backend.app.database.entity;
 
-import jakarta.persistence.Entity;
+import java.time.OffsetDateTime;
+
 import org.springframework.stereotype.Component;
 import com.backend.app.database.Enum.AccountType;
 import jakarta.persistence.*;
@@ -23,6 +24,8 @@ public class User {
   @Column(name = "account_type")
   @Enumerated(EnumType.STRING)
   private AccountType type;
+  private OffsetDateTime join;
+  private String bio;
   public Long getId(){
     return id;
   }
@@ -35,6 +38,21 @@ public class User {
   }
   public void setName(String name){
     this.name = name;
+  }
+
+  public String getBio(){
+    return bio;
+  }
+  public void setBio(String bio){
+    this.bio = bio;
+  }
+
+  public OffsetDateTime getJoin(){
+    return join;
+  }
+
+  public void setJoin(OffsetDateTime join){
+    this.join = join;
   }
 
   public String getEmail(){

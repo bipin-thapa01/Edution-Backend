@@ -13,6 +13,7 @@ public class UserDTO {
   private String imgurl;
   private OffsetDateTime date;
   private AccountType type;
+  private String bio;
 
   public String getName(){
     return name;
@@ -20,6 +21,13 @@ public class UserDTO {
 
   public void setName(String name){
     this.name = name;
+  }
+
+  public String getBio(){
+    return bio;
+  }
+  public void setBio(String bio){
+    this.bio = bio;
   }
 
   public String getUsername(){

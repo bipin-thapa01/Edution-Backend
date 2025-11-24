@@ -3,11 +3,7 @@ package com.backend.app.database.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
-import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.UserNotificationRepository;
@@ -31,7 +27,6 @@ public class UserNotificationService {
     User user = userRepository.findByEmail(email);
     if (user == null)
       return new ArrayList<>();
-    int i = 0;
     List<UserNotificationDTO> notifications = new ArrayList<>(userNotificationRepository.findByUserId(user.getId())
         .stream()
         .map(n -> {
