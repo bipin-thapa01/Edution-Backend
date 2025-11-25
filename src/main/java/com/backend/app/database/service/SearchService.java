@@ -111,15 +111,10 @@ public class SearchService {
     return searchResponseDTO;
   }
 
-  public boolean isFriendService(String username, String friend) {
+  public String isFriendService(String username, String friend) {
     Long id1 = userRepository.findIdByUsername(username);
     Long id2 = userRepository.findIdByUsername(friend);
-    Long f1 = friendRepository.isFriend(id1, id2);
-    Long f2 = friendRepository.isFriend(id2, id1);
-    if (f1 != null || f2 != null) {
-      return true;
-    } else {
-      return false;
-    }
+    String status = friendRepository.isFriend(id1, id2);
+    return status;
   }
 }

@@ -26,6 +26,7 @@ public class User {
   @Column(name = "account_type")
   @Enumerated(EnumType.STRING)
   private AccountType type;
+  @Column(name = "join_date")
   private OffsetDateTime join;
   private String bio;
   public Long getId(){

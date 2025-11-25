@@ -31,14 +31,9 @@ public class SearchController {
 
   @GetMapping("/is-friend")
   public ResponseDTO isFriendController(@RequestHeader("username") String username, @RequestHeader("friend") String friend) {
-      boolean res = searchService.isFriendService(username, friend);
+      String res = searchService.isFriendService(username, friend);
       ResponseDTO responseDTO = new ResponseDTO();
-      if(res){
-        responseDTO.setResponse("friend");
-      }
-      else{
-        responseDTO.setResponse("not friend");
-      }
+      responseDTO.setResponse(res);
       return responseDTO;
   }
   

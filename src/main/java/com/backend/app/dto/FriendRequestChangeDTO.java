@@ -3,6 +3,7 @@ package com.backend.app.dto;
 public class FriendRequestChangeDTO {
   private String response;
   private String username;
+  private String friendUsername;
   private String source;
 
   public String getResponse(){
@@ -17,6 +18,13 @@ public class FriendRequestChangeDTO {
   }
   public void setUsername(String username){
     this.username = username;
+  }
+
+  public String getFriendUsername(){
+    return friendUsername;
+  }
+  public void setFriendUsername(String friendUsername){
+    this.friendUsername = friendUsername;
   }
 
   public String getSource(){

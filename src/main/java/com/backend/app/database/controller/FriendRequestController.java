@@ -61,8 +61,19 @@ public class FriendRequestController {
     }
   }
 
-  @PostMapping("/friend-request")
-  public ResponseDTO postMethodName(@RequestBody FriendRequestChangeDTO dt) {
+  @PostMapping("/send-request")
+  public ResponseDTO sendRequestController(@RequestBody FriendRequestChangeDTO dt) {
+      return friendService.sendRequestService(dt.getUsername(), dt.getFriendUsername());
+  }
+
+  @PostMapping("/update-request")
+  public ResponseDTO updateRequestController(@RequestBody FriendRequestChangeDTO dt) {
       return friendService.updateFriendTable(dt.getUsername(), dt.getSource(), dt.getResponse());
   }
+
+  @PostMapping("/unfriend")
+  public ResponseDTO unfriendController(@RequestBody FriendRequestChangeDTO friendDTO) {
+    return friendService.unfriendService(friendDTO);
+  }
+  
 }

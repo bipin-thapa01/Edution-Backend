@@ -21,12 +21,12 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
   public int updateStatusAndDate(Long userId, Long friendId, String status, OffsetDateTime date);
 
   @Query("""
-        SELECT f.id
+        SELECT f.status
         FROM Friend f
         WHERE (f.userId = :userId AND f.friendId = :friendId)
         OR (f.userId = :friendId AND f.friendId = :userId)
       """)
-  Long isFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
+  String isFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
   @Query("""
         SELECT f
@@ -36,11 +36,15 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
   List<Friend> findFriendLists(@Param("userId") Long userId);
 
   @Query("""
-    SELECT COUNT(f)
-    FROM Friend f
-    WHERE (f.status = 'accepted'
-    AND (f.userId = :userId OR f.friendId = :userId))
-""")
-Long findFriendCount(@Param("userId") Long userId);
+          SELECT COUNT(f)
+          FROM Friend f
+          WHERE (f.status = 'accepted'
+          AND (f.userId = :userId OR f.friendId = :userId))
+      """)
+  Long findFriendCount(@Param("userId") Long userId);
 
+  @Modifying
+  @Transactional
+  @Query("DELETE from Friend f where (f.userId = :userId and f.friendId = :friendId) or (f.userId = :friendId and f.friendId = :userId)")
+  int deleteFriendRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
 }

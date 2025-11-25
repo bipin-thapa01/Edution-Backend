@@ -1,5 +1,6 @@
 package com.backend.app.database.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,7 +59,9 @@ public class UserService {
     userToBeInserted.setPassword(dt.getPassword());
     userToBeInserted.setRoomCode(dt.getCode());
     userToBeInserted.setImgurl("https://i.postimg.cc/bNsWB5RP/e7df128ed6ca1c2afdedb5d12eaff0be.jpg");
+    userToBeInserted.setBackgroundImage("https://i.postimg.cc/RVVKVXYL/dark-anime-scenery-wot9wg412s7h8yxa.jpg");
     userToBeInserted.setType(AccountType.BASIC);
+    userToBeInserted.setJoin(OffsetDateTime.now());
     userRepository.save(userToBeInserted);
 
     responseDTO.setResponse("Account Created Successfully");
