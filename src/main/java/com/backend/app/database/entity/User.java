@@ -20,6 +20,8 @@ public class User {
   private Long roomCode;
   private String password;
   private String imgurl;
+  @Column(name = "background_image")
+  private String backgroundImage;
   private String username;
   @Column(name = "account_type")
   @Enumerated(EnumType.STRING)
@@ -81,6 +83,14 @@ public class User {
   }
   public void setImgurl(String imgurl){
     this.imgurl = imgurl;
+  }
+
+  public String getBackgroundImage(){
+    return backgroundImage;
+  }
+
+  public void setBackgroundImage(String backgroundImage){
+    this.backgroundImage = backgroundImage;
   }
 
   public String getUsername(){

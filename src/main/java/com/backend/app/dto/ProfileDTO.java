@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ProfileDTO {
   private UserDTO userDTO;
+  private UserDTO friendDTO;
   private List<PostDTO> postDTOs;
   private List<UserDTO> friendDTOs;
   private Long friendsCount;
@@ -16,6 +17,13 @@ public class ProfileDTO {
   }
   public void setUserDTO(UserDTO userDTO){
     this.userDTO = userDTO;
+  }
+
+  public UserDTO getFriendDTO(){
+    return friendDTO;
+  }
+  public void setFriendDTO(UserDTO friendDTO){
+    this.friendDTO = friendDTO;
   }
 
   public List<PostDTO> getPostDTOs(){

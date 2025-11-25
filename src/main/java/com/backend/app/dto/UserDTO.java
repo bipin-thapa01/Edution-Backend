@@ -11,6 +11,7 @@ public class UserDTO {
   private String email;
   private Long roomCode;
   private String imgurl;
+  private String backgroundImage;
   private OffsetDateTime date;
   private AccountType type;
   private String bio;
@@ -60,6 +61,14 @@ public class UserDTO {
 
   public void setImgurl(String imgurl){
     this.imgurl = imgurl;
+  }
+
+  public String getBackgroundImage(){
+    return backgroundImage;
+  }
+
+  public void setBackgroundImage(String backgroundImage){
+    this.backgroundImage = backgroundImage;
   }
 
   public OffsetDateTime getDate(){

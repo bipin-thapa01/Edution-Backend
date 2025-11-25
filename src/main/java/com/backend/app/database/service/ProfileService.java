@@ -37,12 +37,9 @@ public class ProfileService {
 
   public ProfileDTO fetchProfileDetails(int offset, String username, String email){
     ProfileDTO profileDTO = new ProfileDTO();
-    String searchEmail = userRepository.findEmailById(userRepository.findIdByUsername(username));
-    User user = userRepository.findByEmail(searchEmail);
-    if(user == null){
-      profileDTO.setResponse("not found");
-      return profileDTO;
-    }
+
+    //original user
+    User user = userRepository.findByEmail(email);
     UserDTO userDTO = new UserDTO();
     userDTO.setDate(user.getJoin());
     userDTO.setBio(user.getBio());
@@ -52,6 +49,24 @@ public class ProfileService {
     userDTO.setType(user.getType());
     userDTO.setUsername(user.getUsername());
     profileDTO.setUserDTO(userDTO);
+
+    String searchEmail = userRepository.findEmailById(userRepository.findIdByUsername(username));
+    User friendUser = userRepository.findByEmail(searchEmail);//friend details
+    if(friendUser == null){
+      profileDTO.setResponse("not found");
+      return profileDTO;
+    }
+    //friend DTO
+    UserDTO fetchFriendDTO = new UserDTO();
+    fetchFriendDTO.setBackgroundImage(friendUser.getBackgroundImage());
+    fetchFriendDTO.setDate(friendUser.getJoin());
+    fetchFriendDTO.setBio(friendUser.getBio());
+    fetchFriendDTO.setEmail(friendUser.getEmail());
+    fetchFriendDTO.setImgurl(friendUser.getImgurl());
+    fetchFriendDTO.setName(friendUser.getName());
+    fetchFriendDTO.setType(friendUser.getType());
+    fetchFriendDTO.setUsername(friendUser.getUsername());
+    profileDTO.setFriendDTO(fetchFriendDTO);
 
     org.springframework.data.domain.Pageable pageable = PageRequest.of(offset/5,5);
     List<Post> posts = postRepository.findPostByUserId(user.getId(), pageable);
@@ -87,11 +102,11 @@ public class ProfileService {
     List<UserDTO> friendDTOs = new ArrayList<>();
     for(Friend friend : friends){
       User friendDetail;
-      if(friend.getUserId() == user.getId()){
-        friendDetail = userRepository.findByEmail(userRepository.findEmailById(friend.getUserId()));
+      if(friend.getUserId().equals(user.getId())){
+        friendDetail = userRepository.findByEmail(userRepository.findEmailById(friend.getFriendId()));
       }
       else{
-        friendDetail = userRepository.findByEmail(userRepository.findEmailById(friend.getFriendId()));
+        friendDetail = userRepository.findByEmail(userRepository.findEmailById(friend.getUserId()));
       }
       UserDTO friendDTO = new UserDTO();
       friendDTO.setBio(friendDetail.getBio());
@@ -101,13 +116,13 @@ public class ProfileService {
       friendDTO.setName(friendDetail.getName());
       friendDTO.setUsername(friendDetail.getUsername());
       friendDTO.setType(friendDetail.getType());
-      friendDTOs.add(userDTO);
+      friendDTOs.add(friendDTO);
     }
     profileDTO.setFriendDTOs(friendDTOs);
 
     profileDTO.setFriendCount(friendRepository.findFriendCount(user.getId()));
 
-    if(email == searchEmail){
+    if(email.equals(searchEmail)){
       profileDTO.setIsOwner(true);
       profileDTO.setIsFriend(false);
     }
