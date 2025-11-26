@@ -3,8 +3,6 @@ package com.backend.app.dto;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
-import com.backend.app.database.entity.User;
-
 //dto for getting friend requests
 @Component
 public class FriendRequestDTO {

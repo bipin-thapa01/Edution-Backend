@@ -36,6 +36,13 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
   List<Friend> findFriendLists(@Param("userId") Long userId);
 
   @Query("""
+          SELECT f
+          FROM Friend f
+          WHERE (f.userId = :userId) AND TRIM(f.status) = 'pending'
+      """)
+  List<Friend> findFriendRequestLists(@Param("userId") Long userId);
+
+  @Query("""
           SELECT COUNT(f)
           FROM Friend f
           WHERE (f.status = 'accepted'

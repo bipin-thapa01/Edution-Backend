@@ -95,7 +95,8 @@ public class FriendService {
       UserNotification userNotification = new UserNotification();
       userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
       userNotification.setUserId(userId);
-      userNotification.setDescription("Request sent to user @" + friendDTO.getFriendUsername() + " is deleted successfully");
+      userNotification
+          .setDescription("Request sent to user @" + friendDTO.getFriendUsername() + " is deleted successfully");
       userNotification.setSource("admin");
       userNotification.setType("admin");
       userNotification.setStatus("pending");
@@ -106,10 +107,10 @@ public class FriendService {
     return responseDTO;
   }
 
-  public FriendRequestDTO fetchFriendPageService(String email){
+  public FriendRequestDTO fetchFriendPageService(String email) {
     FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
 
-    //for getting user data
+    // for getting user data
     User user = userRepository.findByEmail(email);
     UserDTO userDTO = new UserDTO();
     userDTO.setUsername(user.getUsername());
@@ -121,6 +122,28 @@ public class FriendService {
     userDTO.setDate(user.getJoin());
     friendRequestDTO.setUser(userDTO);
     friendRequestDTO.setResponse("valid");
+
+    //for getting friend requests
+    List<Friend> friendRequests = friendRepository.findFriendRequestLists(userRepository.findIdByEmail(email));
+    List<UserDTO> friendRequestsDTOs = new ArrayList<>();
+    for (Friend friend : friendRequests) {
+      UserDTO friendDTO = new UserDTO();
+      User friendUser;
+      if (user.getId() == friend.getUserId()) {
+        friendUser = userRepository.findByEmail(userRepository.findEmailById(friend.getFriendId()));
+      } else {
+        friendUser = userRepository.findByEmail(userRepository.findEmailById(friend.getUserId()));
+      }
+      friendDTO.setUsername(friendUser.getUsername());
+      friendDTO.setName(friendUser.getName());
+      friendDTO.setEmail(friendUser.getEmail());
+      friendDTO.setBackgroundImage(friendUser.getBackgroundImage());
+      friendDTO.setBio(friendUser.getBio());
+      friendDTO.setImgurl(friendUser.getImgurl());
+      friendDTO.setDate(friendUser.getJoin());
+      friendRequestsDTOs.add(friendDTO);
+    }
+    friendRequestDTO.setFriends(friendRequestsDTOs);
 
     return friendRequestDTO;
   }
