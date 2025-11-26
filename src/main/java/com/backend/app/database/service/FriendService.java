@@ -21,33 +21,35 @@ public class FriendService {
   FriendRepository friendRepository;
   UserRepository userRepository;
   UserNotificationRepository userNotificationRepository;
-  public FriendService(FriendRepository friendRepository, UserRepository userRepository, UserNotificationRepository userNotificationRepository){
+
+  public FriendService(FriendRepository friendRepository, UserRepository userRepository,
+      UserNotificationRepository userNotificationRepository) {
     this.friendRepository = friendRepository;
     this.userRepository = userRepository;
     this.userNotificationRepository = userNotificationRepository;
   }
 
-  public List<User> getFriendRequests(String email){
+  public List<User> getFriendRequests(String email) {
     User user = userRepository.findByEmail(email);
     List<Friend> friends = friendRepository.findByUserId(user.getId());
     List<Long> l = new ArrayList<>();
-    for(Friend f: friends){
+    for (Friend f : friends) {
       l.add(f.getFriendId());
     }
     return userRepository.findAllById(l);
   }
 
-  public List<OffsetDateTime> getDate(String email){
+  public List<OffsetDateTime> getDate(String email) {
     User user = userRepository.findByEmail(email);
     List<Friend> friends = friendRepository.findByUserId(user.getId());
     List<OffsetDateTime> date = new ArrayList<>();
-    for(Friend friend: friends){
+    for (Friend friend : friends) {
       date.add(friend.getDate());
     }
     return date;
   }
 
-  public ResponseDTO sendRequestService(String username, String friendUsername){
+  public ResponseDTO sendRequestService(String username, String friendUsername) {
     Friend friend = new Friend();
     friend.setUserId(userRepository.findIdByUsername(username));
     friend.setFriendId(userRepository.findIdByUsername(friendUsername));
@@ -56,41 +58,47 @@ public class FriendService {
     friendRepository.save(friend);
     ResponseDTO responseDTO = new ResponseDTO();
     responseDTO.setResponse("success");
-    // UserNotification userNotification = new UserNotification();
-    // userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
-    // userNotification.setUserId(userRepository.findIdByUsername(username));
-    // userNotification.setDescription("Request successfully sent to user" + friendUsername);
-    // userNotification.setSource("admin");
-    // userNotification.setType("admin");
-    // userNotification.setStatus("pending");
-    // userNotificationRepository.save(userNotification);
+    UserNotification userNotification = new UserNotification();
+    userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+    userNotification.setUserId(userRepository.findIdByUsername(username));
+    userNotification.setDescription("Request successfully sent to user @" + friendUsername);
+    userNotification.setSource("admin");
+    userNotification.setType("admin");
+    userNotification.setStatus("pending");
+    userNotificationRepository.save(userNotification);
     return responseDTO;
   }
 
-  public ResponseDTO updateFriendTable(String username, String friendUsername, String response){
+  public ResponseDTO updateFriendTable(String username, String friendUsername, String response) {
     Long userId = userRepository.findIdByUsername(username);
     Long friendId = userRepository.findIdByUsername(friendUsername);
     OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
     int status = friendRepository.updateStatusAndDate(userId, friendId, response, now);
-    ResponseDTO responseDTO =  new ResponseDTO();
-    if(status == 1){
+    ResponseDTO responseDTO = new ResponseDTO();
+    if (status == 1) {
       responseDTO.setResponse("success");
-    }
-    else{
+    } else {
       responseDTO.setResponse("error");
     }
     return responseDTO;
   }
 
-  public ResponseDTO unfriendService(FriendRequestChangeDTO friendDTO){
+  public ResponseDTO unfriendService(FriendRequestChangeDTO friendDTO) {
     Long userId = userRepository.findIdByUsername(friendDTO.getUsername());
     Long friendId = userRepository.findIdByUsername(friendDTO.getFriendUsername());
     int n = friendRepository.deleteFriendRequest(userId, friendId);
     ResponseDTO responseDTO = new ResponseDTO();
-    if(n == 1){
+    if (n == 1) {
       responseDTO.setResponse("success");
-    }
-    else{
+      UserNotification userNotification = new UserNotification();
+      userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+      userNotification.setUserId(userId);
+      userNotification.setDescription("Request sent to user @" + friendDTO.getFriendUsername() + " is deleted successfully");
+      userNotification.setSource("admin");
+      userNotification.setType("admin");
+      userNotification.setStatus("pending");
+      userNotificationRepository.save(userNotification);
+    } else {
       responseDTO.setResponse("unsuccess");
     }
     return responseDTO;

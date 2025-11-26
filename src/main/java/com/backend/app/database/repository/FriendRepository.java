@@ -29,9 +29,9 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
   String isFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
   @Query("""
-        SELECT f
-        FROM Friend f
-        WHERE (f.userId = :userId or f.friendId = :userId) and f.status = 'accepted'
+          SELECT f
+          FROM Friend f
+          WHERE (f.userId = :userId OR f.friendId = :userId) AND TRIM(f.status) = 'accepted'
       """)
   List<Friend> findFriendLists(@Param("userId") Long userId);
 

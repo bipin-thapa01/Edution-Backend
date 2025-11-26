@@ -75,7 +75,7 @@ public class ProfileService {
     List<PostDTO> postDTOs =  new ArrayList<>();
     for(Post post: posts){
       PostDTO postDTO = new PostDTO();
-      postDTO.setBy(user.getUsername());
+      postDTO.setBy(searchUser.getUsername());
       postDTO.setCreatedAt(post.getCreatedAt());
       postDTO.setDescription(post.getDescription());
       postDTO.setImgurl(post.getImgurl());
@@ -92,7 +92,7 @@ public class ProfileService {
         postDTO.setIsBookmarked(false);
       }
       postDTO.setPostId(post.getId());
-      postDTO.setProfileUrl(user.getImgurl());
+      postDTO.setProfileUrl(searchUser.getImgurl());
       postDTO.setRepostCount(post.getRepostCount());
       postDTO.setSave(post.getSave());
       postDTO.setStar(post.getStar());
