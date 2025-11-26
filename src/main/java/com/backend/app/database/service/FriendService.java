@@ -14,7 +14,9 @@ import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.FriendRequestChangeDTO;
+import com.backend.app.dto.FriendRequestDTO;
 import com.backend.app.dto.ResponseDTO;
+import com.backend.app.dto.UserDTO;
 
 @Service
 public class FriendService {
@@ -102,5 +104,24 @@ public class FriendService {
       responseDTO.setResponse("unsuccess");
     }
     return responseDTO;
+  }
+
+  public FriendRequestDTO fetchFriendPageService(String email){
+    FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
+
+    //for getting user data
+    User user = userRepository.findByEmail(email);
+    UserDTO userDTO = new UserDTO();
+    userDTO.setUsername(user.getUsername());
+    userDTO.setName(user.getName());
+    userDTO.setEmail(email);
+    userDTO.setBackgroundImage(user.getBackgroundImage());
+    userDTO.setBio(user.getBio());
+    userDTO.setImgurl(user.getImgurl());
+    userDTO.setDate(user.getJoin());
+    friendRequestDTO.setUser(userDTO);
+    friendRequestDTO.setResponse("valid");
+
+    return friendRequestDTO;
   }
 }

@@ -23,13 +23,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             WHERE "by" IN (
                 SELECT friend_id
                 FROM friend
-                WHERE user_id = (SELECT id FROM users WHERE username = :username)
+                WHERE user_id = (SELECT id FROM users WHERE username = :username) and status = 'accepted'
 
                 UNION
 
                 SELECT user_id
                 FROM friend
-                WHERE friend_id = (SELECT id FROM users WHERE username = :username)
+                WHERE friend_id = (SELECT id FROM users WHERE username = :username) and status = 'accepted'
             )
             AND "by" <> (SELECT id FROM users WHERE username = :username)
             ORDER BY id DESC

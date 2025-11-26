@@ -2,6 +2,8 @@ package com.backend.app.database.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.backend.app.JwtUtil;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.service.FriendService;
 import com.backend.app.dto.FriendRequestChangeDTO;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -27,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class FriendRequestController {
   @Autowired
   FriendRequestDTO list;
+  @Autowired
+  JwtUtil jwtUtil;
   @Autowired
   UserDTO friendData;
   FriendService friendService;
@@ -75,5 +81,19 @@ public class FriendRequestController {
   public ResponseDTO unfriendController(@RequestBody FriendRequestChangeDTO friendDTO) {
     return friendService.unfriendService(friendDTO);
   }
+
+  @GetMapping("/fetch-friend-page")
+  public FriendRequestDTO fetchFriendPageController(@RequestHeader("authorization") String authorization) {
+      if(jwtUtil.validateToken(authorization)){
+        String email = jwtUtil.extractEmail(authorization);
+        return friendService.fetchFriendPageService(email);
+      }
+      else{
+        FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
+        friendRequestDTO.setResponse("invalid");
+        return friendRequestDTO;
+      }
+  }
+  
   
 }

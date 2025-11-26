@@ -3,11 +3,15 @@ package com.backend.app.dto;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
+import com.backend.app.database.entity.User;
+
 //dto for getting friend requests
 @Component
 public class FriendRequestDTO {
   private String res;
+  private UserDTO user;
   private List<UserDTO> users;
+  private List<UserDTO> friends;
 
   public String getResponse(){
     return res;
@@ -21,5 +25,19 @@ public class FriendRequestDTO {
   }
   public void setUsers(List<UserDTO> users){
     this.users = users;
+  }
+
+  public List<UserDTO> getFriends(){
+    return friends;
+  }
+  public void setFriends(List<UserDTO> friends){
+    this.friends = friends;
+  }
+
+  public UserDTO getUser(){
+    return user;
+  }
+  public void setUser(UserDTO user){
+    this.user = user;
   }
 }
