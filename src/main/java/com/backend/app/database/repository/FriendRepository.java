@@ -38,7 +38,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
   @Query("""
           SELECT f
           FROM Friend f
-          WHERE (f.userId = :userId) AND TRIM(f.status) = 'pending'
+          WHERE (f.friendId = :userId) AND TRIM(f.status) = 'pending'
       """)
   List<Friend> findFriendRequestLists(@Param("userId") Long userId);
 
