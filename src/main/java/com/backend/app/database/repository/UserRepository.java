@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.backend.app.database.Enum.AccountType;
 import com.backend.app.database.entity.*;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -18,6 +21,31 @@ public interface UserRepository extends JpaRepository<User, Long> {
   public User findByEmailAndPassword(String email, String password);
 
   public User findByUsernameAndPassword(String username, String password);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE User u set u.name = :name where u.email = :email and u.password = :password")
+  public int updateNameByEmailAndPassword(@Param("email") String email,@Param("password") String password,@Param("name") String name);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE User u set u.username = :username where u.email = :email and u.password = :password")
+  public int updateUsernameByEmailAndPassword(@Param("email") String email,@Param("password") String password,@Param("username") String username);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE User u set u.bio = :bio where u.email = :email and u.password = :password")
+  public int updateBioByEmailAndPassword(@Param("email") String email,@Param("password") String password,@Param("bio") String bio);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE User u set u.imgurl = :imgurl where u.email = :email and u.password = :password")
+  public int updateImgurlByEmailAndPassword(@Param("email") String email,@Param("password") String password,@Param("imgurl") String imgurl);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE User u set u.backgroundImage = :backgroundImage where u.email = :email and u.password = :password")
+  public int updateBackgroundImageByEmailAndPassword(@Param("email") String email,@Param("password") String password,@Param("backgroundImage") String backgroundImage);
 
   @Query("SELECT u.imgurl FROM User u WHERE u.username = :username")
   public String findImgurlByUsername(String username);

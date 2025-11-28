@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.app.JwtUtil;
 import com.backend.app.database.service.SettingsService;
 import com.backend.app.dto.ResponseDTO;
+import com.backend.app.dto.SettingsDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +38,11 @@ public class SettingsController {
       responseDTO.setResponse("invalid");
       return responseDTO;
     }
+  }
+
+  @PostMapping("/update-text")
+  public ResponseDTO updateTextController(@RequestBody SettingsDTO settingsDTO) {
+      return settingsService.settingsUpdateService(settingsDTO);
   }
 
 }
