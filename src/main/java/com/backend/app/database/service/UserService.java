@@ -11,23 +11,29 @@ import org.springframework.stereotype.Service;
 import com.backend.app.JwtUtil;
 import com.backend.app.database.Enum.AccountType;
 import com.backend.app.database.entity.User;
+import com.backend.app.database.entity.UserNotification;
+import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.ResponseDTO;
 import com.backend.app.dto.AuthenticateDTO;
 
 @Service
 public class UserService {
+  private final UserRepository userRepository;
+  private final UserNotificationRepository userNotificationRepository;
+  private final JwtUtil jwtUtil;
 
   @Autowired
-  private JwtUtil jwtUtil;
-
-  private UserRepository userRepository;
-
-  public UserService(UserRepository userRepository) {
+  public UserService(
+      UserRepository userRepository,
+      UserNotificationRepository userNotificationRepository,
+      JwtUtil jwtUtil) {
     this.userRepository = userRepository;
+    this.userNotificationRepository = userNotificationRepository;
+    this.jwtUtil = jwtUtil;
   }
 
-  public User getByEmail(String email){
+  public User getByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 
@@ -42,12 +48,17 @@ public class UserService {
   public ResponseDTO signupUser(AuthenticateDTO dt) {
     ResponseDTO responseDTO = new ResponseDTO();
     List<User> users = userRepository.findAll();
+    if (dt.getEmail().equals("") || dt.getName().equals("") || dt.getPassword().equals("")
+        || dt.getUsername().equals("")) {
+      responseDTO.setResponse("One of the compulsory field is empty!");
+      return responseDTO;
+    }
     for (User user : users) {
       if (user.getEmail().equals(dt.getEmail())) {
         responseDTO.setResponse("This email is already in use!");
         return responseDTO;
       }
-      if(user.getUsername().equals(dt.getUsername())){
+      if (user.getUsername().equals(dt.getUsername())) {
         responseDTO.setResponse("This Username is already in use!");
         return responseDTO;
       }
@@ -64,28 +75,37 @@ public class UserService {
     userToBeInserted.setJoin(OffsetDateTime.now());
     userRepository.save(userToBeInserted);
 
+    UserNotification userNotification = new UserNotification();
+    userNotification.setDate(OffsetDateTime.now());
+    userNotification.setDescription("Welcome to EDUTION!");
+    userNotification.setSource("admin");
+    userNotification.setType("admin");
+    userNotification.setUserId(userRepository.findIdByUsername(dt.getUsername()));
+    userNotificationRepository.save(userNotification);
+
     responseDTO.setResponse("Account Created Successfully");
+    responseDTO.setStatus("done");
     return responseDTO;
   }
 
-  public ResponseEntity<Map<String,String>> loginUser(AuthenticateDTO dt){
+  public ResponseEntity<Map<String, String>> loginUser(AuthenticateDTO dt) {
     User u;
     String tokenEmail = "";
     System.out.println(dt.getEmail());
-    if(dt.getEmail() != "" && dt.getEmail() != null){
+    if (dt.getEmail() != "" && dt.getEmail() != null) {
       u = userRepository.findByEmailAndPassword(dt.getEmail(), dt.getPassword());
       tokenEmail = dt.getEmail();
-    }
-    else{
+    } else {
       u = userRepository.findByUsernameAndPassword(dt.getUsername(), dt.getPassword());
-      if(u!=null){
+      if (u != null) {
         tokenEmail = u.getEmail();
       }
     }
-    if(u == null){
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","Invalid email/username or password!"));
+    if (u == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(Map.of("error", "Invalid email/username or password!"));
     }
     String token = jwtUtil.generateToken(u.getId().toString(), tokenEmail);
-    return ResponseEntity.ok(Map.of("token",token));
+    return ResponseEntity.ok(Map.of("token", token));
   }
 }

@@ -65,8 +65,15 @@ public class FriendService {
     userNotification.setUserId(userRepository.findIdByUsername(username));
     userNotification.setDescription("Request successfully sent to user @" + friendUsername);
     userNotification.setSource("admin");
-    userNotification.setType("admin");
+    userNotification.setType("friend request");
     userNotification.setStatus("pending");
+    userNotificationRepository.save(userNotification);
+
+    userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+    userNotification.setUserId(userRepository.findIdByUsername(friendUsername));
+    userNotification.setDescription("You have received friend request from @" + username);
+    userNotification.setSource("admin");
+    userNotification.setType("friend request");
     userNotificationRepository.save(userNotification);
     return responseDTO;
   }
@@ -76,6 +83,15 @@ public class FriendService {
     Long friendId = userRepository.findIdByUsername(friendUsername);
     OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
     int status = friendRepository.updateStatusAndDate(userId, friendId, response, now);
+    UserNotification userNotification = new UserNotification();
+    if(response.equals("accepted")){
+      userNotification.setDate(now);
+      userNotification.setDescription("@" + friendUsername + " accepted your friend request");
+      userNotification.setUserId(userId);
+      userNotification.setSource("admin");
+      userNotification.setType("friend request");
+    }
+    userNotificationRepository.save(userNotification);
     ResponseDTO responseDTO = new ResponseDTO();
     if (status == 1) {
       responseDTO.setResponse("success");
@@ -93,14 +109,33 @@ public class FriendService {
     if (n == 1) {
       responseDTO.setResponse("success");
       UserNotification userNotification = new UserNotification();
-      userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
-      userNotification.setUserId(userId);
-      userNotification
-          .setDescription("Request sent to user @" + friendDTO.getFriendUsername() + " is deleted successfully");
-      userNotification.setSource("admin");
-      userNotification.setType("admin");
-      userNotification.setStatus("pending");
-      userNotificationRepository.save(userNotification);
+      if(friendDTO.getSource().equals("declined")){
+        userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+        userNotification.setUserId(userId);
+        userNotification.setDescription("Request sent to user @" + friendDTO.getFriendUsername() + " was declined!");
+        userNotification.setSource("admin");
+        userNotification.setType("friend request");
+        userNotification.setStatus("pending");
+        userNotificationRepository.save(userNotification);
+      }
+      else if(friendDTO.getSource().equals("unfriend")){
+        userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+        userNotification.setUserId(friendId);
+        userNotification.setDescription("@" + friendDTO.getUsername() + " unfriended you!");
+        userNotification.setSource("admin");
+        userNotification.setType("friend request");
+        userNotification.setStatus("pending");
+        userNotificationRepository.save(userNotification);
+      }
+      else{
+        userNotification.setDate(OffsetDateTime.now(ZoneOffset.UTC));
+        userNotification.setUserId(friendId);
+        userNotification.setDescription("@" + friendDTO.getUsername() + " deleted their friend request!");
+        userNotification.setSource("admin");
+        userNotification.setType("friend request");
+        userNotification.setStatus("pending");
+        userNotificationRepository.save(userNotification);
+      }
     } else {
       responseDTO.setResponse("unsuccess");
     }
@@ -123,7 +158,7 @@ public class FriendService {
     friendRequestDTO.setUser(userDTO);
     friendRequestDTO.setResponse("valid");
 
-    //for getting friend requests
+    // for getting friend requests
     List<Friend> friendRequests = friendRepository.findFriendRequestLists(userRepository.findIdByEmail(email));
     List<UserDTO> friendRequestsDTOs = new ArrayList<>();
     for (Friend friend : friendRequests) {

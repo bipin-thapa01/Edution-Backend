@@ -9,12 +9,20 @@ public class ResponseDTO {
   private String res;
   @Autowired
   private UserDTO userDTO;
+  private String status;
   
   public String getResponse(){
     return res;
   }
   public void setResponse(String res){
     this.res = res;
+  }
+
+  public String getStatus(){
+    return status;
+  }
+  public void setStatus(String status){
+    this.status = status;
   }
 
   public UserDTO getUser(){
