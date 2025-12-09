@@ -7,11 +7,16 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.Post;
 import com.backend.app.database.entity.User;
+import com.backend.app.database.entity.UserNotification;
 import com.backend.app.database.repository.BookmarkRepository;
+import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.PostRepository;
 import com.backend.app.database.repository.StarRepository;
+import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.PostDTO;
 import com.backend.app.dto.ReceivePostDTO;
@@ -28,18 +33,42 @@ public class PostService {
   StarRepository starRepository;
   @Autowired
   BookmarkRepository bookmarkRepository;
+  @Autowired
+  UserNotificationRepository userNotificationRepository;
+  @Autowired
+  FriendRepository friendRepository;
   
   public String publishPost(PostDTO dt){
+    Long userId = userRepository.findIdByUsername(dt.getBy());
+    Long friendId;
     Post post = new Post();
     post.setCreatedAt(OffsetDateTime.now());
     post.setDescription(dt.getDescription());
-    post.setBy(userRepository.findIdByUsername(dt.getBy()));
+    post.setBy(userId);
     post.setImgurl(dt.getImgurl());
     post.setStar(Long.valueOf(0));
     post.setSave(Long.valueOf(0));
     post.setRepost(false);
     post.setRepostCount(Long.valueOf(0));
     postRepository.save(post);
+
+    UserNotification notification = new UserNotification();
+    List<Friend> friendLists = friendRepository.findFriendLists(userId);
+    for(Friend f : friendLists){
+      if(f.getUserId() == userId){
+        friendId = f.getFriendId();
+      }
+      else{
+        friendId = f.getUserId();
+      }
+
+      notification.setDate(OffsetDateTime.now());
+      notification.setDescription("You frined @" + dt.getBy() + " has uploaded a new post!");
+      notification.setSource("admin");
+      notification.setType("post");
+      userNotificationRepository.save(notification);
+    }
+
     return "posted successfully";
   }
 
