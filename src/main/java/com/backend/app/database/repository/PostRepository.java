@@ -74,4 +74,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p from Post p where p.by = :id")
     List<Post> findPostByUserId(Long id, org.springframework.data.domain.Pageable pageable);
+
+    @Query("SELECT p.by FROM Post p WHERE p.id = :id")
+    Long findByById(@Param("id") Long id);
+
 }

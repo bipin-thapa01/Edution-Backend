@@ -52,9 +52,9 @@ public class PostService {
     post.setRepostCount(Long.valueOf(0));
     postRepository.save(post);
 
-    UserNotification notification = new UserNotification();
     List<Friend> friendLists = friendRepository.findFriendLists(userId);
     for(Friend f : friendLists){
+      UserNotification notification = new UserNotification();
       if(f.getUserId() == userId){
         friendId = f.getFriendId();
       }
@@ -66,6 +66,7 @@ public class PostService {
       notification.setDescription("You frined @" + dt.getBy() + " has uploaded a new post!");
       notification.setSource("admin");
       notification.setType("post");
+      notification.setUserId(friendId);
       userNotificationRepository.save(notification);
     }
 
@@ -157,6 +158,14 @@ public class PostService {
     if(increaseStar){
       int n1 = starRepository.addStar(starDTO.getPostId(), starDTO.getUserId());
       int n2 = postRepository.increaseStar(starDTO.getPostId());
+      UserNotification userNotification = new UserNotification();
+      userNotification.setDate(OffsetDateTime.now());
+      userNotification.setDescription("@" + userRepository.findUsernameById(starDTO.getUserId()) + " liked your post.");
+      userNotification.setSource("admin");
+      userNotification.setType("post");
+      Long userId = postRepository.findByById(starDTO.getPostId());
+      userNotification.setUserId(userId);
+      userNotificationRepository.save(userNotification);
       if(n1 == 1 && n2 == 1){
         responseDTO.setResponse("success");
         return responseDTO;

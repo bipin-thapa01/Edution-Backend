@@ -1,5 +1,6 @@
 package com.backend.app.database.service;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.backend.app.database.Enum.BookmarkType;
 import com.backend.app.database.entity.Bookmark;
+import com.backend.app.database.entity.UserNotification;
 import com.backend.app.database.repository.BookmarkRepository;
 import com.backend.app.database.repository.PostRepository;
+import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.BookmarkDTO;
 import com.backend.app.dto.BookmarkListDTO;
@@ -20,12 +23,14 @@ public class BookmarkService {
   BookmarkRepository bookmarkRepository;
   PostRepository postRepository;
   UserRepository userRepository;
+  UserNotificationRepository userNotificationRepository;
 
   public BookmarkService(BookmarkRepository bookmarkRepository, PostRepository postRepository,
-      UserRepository userRepository) {
+      UserRepository userRepository, UserNotificationRepository userNotificationRepository) {
     this.bookmarkRepository = bookmarkRepository;
     this.postRepository = postRepository;
     this.userRepository = userRepository;
+    this.userNotificationRepository = userNotificationRepository;
   }
 
   public BookmarkListDTO fetchBookmarks(String email) {
@@ -62,10 +67,18 @@ public class BookmarkService {
   public ResponseDTO setBookmark(Long userId, BookmarkType bookmarkType, Long bookmarkId) {
     int n = bookmarkRepository.insertBookmark(bookmarkType, userId, bookmarkId);
     ResponseDTO responseDTO = new ResponseDTO();
+
+    UserNotification userNotification = new UserNotification();
+    userNotification.setDate(OffsetDateTime.now());
+    userNotification.setDescription("@" + userRepository.findUsernameById(userId) + " bookmarked your post.");
+    userNotification.setSource("admin");
+    userNotification.setType("post");
+    Long id = postRepository.findByById(bookmarkId);
+    userNotification.setUserId(id);
+    userNotificationRepository.save(userNotification);
+
     if (n == 1) {
-      if (bookmarkType == BookmarkType.post) {
-        postRepository.increaseSave(bookmarkId);
-      }
+      postRepository.increaseSave(bookmarkId);
       responseDTO.setResponse("success");
       return responseDTO;
     }
