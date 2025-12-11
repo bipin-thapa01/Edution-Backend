@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.backend.app.JwtUtil;
 import com.backend.app.database.Enum.AccountType;
+import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.entity.UserNotification;
+import com.backend.app.database.repository.FriendRepository;
 import com.backend.app.database.repository.UserNotificationRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.ResponseDTO;
@@ -20,15 +22,17 @@ import com.backend.app.dto.AuthenticateDTO;
 public class UserService {
   private final UserRepository userRepository;
   private final UserNotificationRepository userNotificationRepository;
+  private FriendRepository friendRepository;
   private final JwtUtil jwtUtil;
 
   public UserService(
       UserRepository userRepository,
       UserNotificationRepository userNotificationRepository,
-      JwtUtil jwtUtil) {
+      JwtUtil jwtUtil, FriendRepository friendRepository) {
     this.userRepository = userRepository;
     this.userNotificationRepository = userNotificationRepository;
     this.jwtUtil = jwtUtil;
+    this.friendRepository = friendRepository;
   }
 
   public User getByEmail(String email) {
@@ -80,6 +84,13 @@ public class UserService {
     userNotification.setType("admin");
     userNotification.setUserId(userRepository.findIdByUsername(dt.getUsername()));
     userNotificationRepository.save(userNotification);
+
+    Friend friend = new Friend();
+    friend.setDate(OffsetDateTime.now());
+    friend.setFriendId(Long.valueOf(3));
+    friend.setStatus("accepted");
+    friend.setUserId(userRepository.findIdByUsername(dt.getUsername()));
+    friendRepository.save(friend);
 
     responseDTO.setResponse("Account Created Successfully");
     responseDTO.setStatus("done");

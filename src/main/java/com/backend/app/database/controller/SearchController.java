@@ -14,7 +14,12 @@ import com.backend.app.dto.SearchResponseDTO;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins= "http://localhost:3000")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "https://edution-frontend.vercel.app"},
+    allowedHeaders = "*",
+    allowCredentials = "true"
+)
+
 public class SearchController {
   @Autowired
   JwtUtil jwt;

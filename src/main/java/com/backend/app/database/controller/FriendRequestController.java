@@ -23,7 +23,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "https://edution-frontend.vercel.app"},
+    allowedHeaders = "*",
+    allowCredentials = "true"
+)
+
 public class FriendRequestController {
   @Autowired
   FriendRequestDTO list;

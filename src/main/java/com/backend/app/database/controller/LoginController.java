@@ -8,7 +8,12 @@ import com.backend.app.dto.AuthenticateDTO;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins= "http://localhost:3000")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "https://edution-frontend.vercel.app"},
+    allowedHeaders = "*",
+    allowCredentials = "true"
+)
+
 public class LoginController {
   UserService userService;
   public LoginController(UserService userService){

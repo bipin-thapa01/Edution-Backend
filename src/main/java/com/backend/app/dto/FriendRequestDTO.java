@@ -10,12 +10,20 @@ public class FriendRequestDTO {
   private UserDTO user;
   private List<UserDTO> users;
   private List<UserDTO> friends;
+  private List<String> lastMessage;
 
   public String getResponse(){
     return res;
   }
   public void setResponse(String res){
     this.res = res;
+  }
+
+  public List<String> getLastMessage(){
+    return lastMessage;
+  }
+  public void setLastMessage(List<String> lastMessage){
+    this.lastMessage = lastMessage;
   }
 
   public List<UserDTO> getUsers(){

@@ -9,6 +9,7 @@ import com.backend.app.dto.ResponseDTO;
 import com.backend.app.dto.SettingsDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "https://edution-frontend.vercel.app"},
+    allowedHeaders = "*",
+    allowCredentials = "true"
+)
+
 public class SettingsController {
 
   @Autowired

@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(
+    origins = {"http://localhost:3000", "https://edution-frontend.vercel.app"},
+    allowedHeaders = "*",
+    allowCredentials = "true"
+)
+
 public class BookmarkController {
 
   @Autowired

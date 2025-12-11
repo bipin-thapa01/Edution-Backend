@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.backend.app.database.entity.Friend;
 import com.backend.app.database.entity.User;
 import com.backend.app.database.repository.FriendRepository;
+import com.backend.app.database.repository.MessageRepository;
 import com.backend.app.database.repository.UserRepository;
 import com.backend.app.dto.FriendRequestDTO;
 import com.backend.app.dto.UserDTO;
@@ -16,15 +17,19 @@ import com.backend.app.dto.UserDTO;
 public class MessageService {
   private UserRepository userRepository;
   private FriendRepository friendRepository;
-  public MessageService(UserRepository userRepository, FriendRepository friendRepository){
+  private MessageRepository messageRepository;
+
+  public MessageService(UserRepository userRepository, FriendRepository friendRepository,
+      MessageRepository messageRepository) {
     this.userRepository = userRepository;
     this.friendRepository = friendRepository;
+    this.messageRepository = messageRepository;
   }
 
-  public FriendRequestDTO messageService(String email){
+  public FriendRequestDTO messageService(String email) {
     FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
 
-    //user data
+    // user data
     User user = userRepository.findByEmail(email);
     UserDTO userDTO = new UserDTO();
     userDTO.setBackgroundImage(user.getBackgroundImage());
@@ -36,17 +41,26 @@ public class MessageService {
     userDTO.setUsername(user.getUsername());
     friendRequestDTO.setUser(userDTO);
 
-    //friend data
+    // friend data
     List<Friend> friend = friendRepository.findFriendLists(user.getId());
     List<UserDTO> friends = new ArrayList<>();
-    for(Friend f : friend){
+    List<String> messages = new ArrayList<>();
+    for (Friend f : friend) {
       User friendUser;
-      if(f.getUserId() == user.getId()){
+      if (f.getUserId() == user.getId()) {
         friendUser = userRepository.findByEmail(userRepository.findEmailById(f.getFriendId()));
-      }
-      else{
+      } else {
         friendUser = userRepository.findByEmail(userRepository.findEmailById(f.getUserId()));
       }
+      String message;
+      List<String> fetchMessages = messageRepository.findContentByByAndTo(user.getUsername(), friendUser.getUsername());
+      if (fetchMessages != null && !fetchMessages.isEmpty()) {
+        message = fetchMessages.get(fetchMessages.size() - 1);
+      } else {
+        message = "Say Hi to @" + friendUser.getUsername();
+      }
+
+      messages.add(message);
       UserDTO friendDTO = new UserDTO();
       friendDTO.setBio(friendUser.getBio());
       friendDTO.setDate(friendUser.getJoin());
@@ -58,6 +72,7 @@ public class MessageService {
       friends.add(friendDTO);
     }
     friendRequestDTO.setFriends(friends);
+    friendRequestDTO.setLastMessage(messages);
 
     friendRequestDTO.setResponse("valid");
 
